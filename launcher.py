@@ -100,20 +100,36 @@ class Launcher:
         self.active_screen.enter()
 
     def system_restart(self):
-        """Cleanly releases DRM Master and restores console TTY before rebooting."""
-        log_info("System restart initiated. Releasing DRM Master...")
+        """Rebinds fbcon to DRM plane via VT switch, cleanly exits Python, and reboots."""
+        log_info("System restart initiated. Rebinding fbcon to DRM pipeline...")
+    
+        # 1. Shut down Pygame subsystems
         pygame.display.quit()
         pygame.quit()
-        os.system("stty sane 2>/dev/null; setterm -cursor on 2>/dev/null; tput cnorm 2>/dev/null")
-        os.system("sudo reboot")
+    
+        # 2. Re-attach kernel framebuffer console to VT1 and restore text mode
+        # Required for vc4 driver to reset the panel PMIC/bridge during warm reboot
+        os.system("sudo chvt 1 2>/dev/null")
+        os.system("sudo kbd_mode -a 2>/dev/null")
+        os.system("setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1")
+    
+        # 3. Trigger clean system reboot and exit launcher process
+        os.system("sudo systemctl reboot")
+        sys.exit(0)
 
     def system_shutdown(self):
-        """Cleanly releases DRM Master and restores console TTY before shutting down."""
-        log_info("System shutdown initiated. Releasing DRM Master...")
+        """Rebinds fbcon to DRM plane via VT switch, cleanly exits Python, and powers off."""
+        log_info("System shutdown initiated. Rebinding fbcon to DRM pipeline...")
+    
         pygame.display.quit()
         pygame.quit()
-        os.system("stty sane 2>/dev/null; setterm -cursor on 2>/dev/null; tput cnorm 2>/dev/null")
-        os.system("sudo shutdown -h now")
+    
+        os.system("sudo chvt 1 2>/dev/null")
+        os.system("sudo kbd_mode -a 2>/dev/null")
+        os.system("setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1")
+    
+        os.system("sudo systemctl poweroff")
+        sys.exit(0)
 
     def run(self):
         log_info("DIRT-TOUCH launcher started.")
