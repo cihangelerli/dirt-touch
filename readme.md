@@ -535,8 +535,8 @@ dirt-touch/
 ```
 
 - Website: [https://www.dirtcakestudio.com](https://www.dirtcakestudio.com)
-- Instagram: @dirtcakestudio
-- Twitter: @dirtcakestudio
-- Behance: https://www.behance.net/dirtcakestudio
-- Bluesky: dirtcakestudio.bsky.social
-- Youtube: @dirtcakestudio
+- Instagram: [@dirtcakestudio] (https://www.instagram.com/dirtcakestudio/)
+- Twitter / X: [@dirtcakestudio] (https://www.x.com/dirtcakestudio/)
+- Behance: [dirtcakestudio] (https://www.behance.net/dirtcakestudio)
+- Bluesky: [dirtcakestudio.bsky.social] (https://bsky.app/profile/dirtcakestudio.bsky.social)
+- Youtube: [@dirtcakestudio] (https://www.youtube.com/@dirtcakestudio)
