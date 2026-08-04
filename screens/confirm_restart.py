@@ -2,56 +2,33 @@
 import pygame
 from screens.base_screen import BaseScreen
 from ui.button import Button
-from ui.footer import Footer
-from ui.colors import COLOR_BACKGROUND, COLOR_TEXT_ORANGE
-from ui.fonts import get_font_large
-from utils.system import execute_restart
 
 class ConfirmRestartScreen(BaseScreen):
     def __init__(self, app_state_manager):
         super().__init__(app_state_manager)
-        self.footer = Footer(pygame.Rect(0, 444, 640, 36))
         
-        # Bottom dual-action buttons matching design
+        self.btn_confirm = Button(
+            rect=pygame.Rect(80, 260, 220, 100),
+            text="CONFIRM RESTART",
+            style="SYS",
+            callback=lambda: self.app.system_restart()
+        )
         self.btn_cancel = Button(
-            rect=pygame.Rect(42, 360, 276, 84),
+            rect=pygame.Rect(340, 260, 220, 100),
             text="CANCEL",
-            style="CANCEL",
+            style="APP",
             callback=lambda: self.app.switch_screen("home")
         )
-        self.btn_confirm = Button(
-            rect=pygame.Rect(321, 360, 276, 84),
-            text="RESTART",
-            style="SYS",
-            callback=execute_restart
-        )
-
-    def update(self, dt: float):
-        self.footer.update(dt)
+        self.buttons = [self.btn_confirm, self.btn_cancel]
 
     def handle_event(self, event: pygame.event.Event):
-        self.btn_cancel.handle_event(event)
-        self.btn_confirm.handle_event(event)
+        for btn in self.buttons:
+            if btn.handle_event(event):
+                break
+
+    def update(self, dt: float):
+        pass
 
     def draw(self, surface: pygame.Surface):
-        surface.fill(COLOR_BACKGROUND)
-        font = get_font_large()
-
-        # Header right-aligned
-        hdr_surf = font.render("CONFIRM RESTART", True, COLOR_TEXT_ORANGE)
-        surface.blit(hdr_surf, (640 - hdr_surf.get_width() - 42, 30))
-
-        # Divider line
-        pygame.draw.line(surface, COLOR_TEXT_ORANGE, (42, 70), (597, 70), 2)
-
-        # Prompts
-        line1 = font.render("> THE DEVICE WILL BE RESTARTED,", True, COLOR_TEXT_ORANGE)
-        line2 = font.render("> DO YOU WANT TO PROCEED?", True, COLOR_TEXT_ORANGE)
-        surface.blit(line1, (68, 170))
-        surface.blit(line2, (68, 210))
-
-        # Action Buttons
-        self.btn_cancel.draw(surface)
-        self.btn_confirm.draw(surface)
-        
-        self.footer.draw(surface)
+        for btn in self.buttons:
+            btn.draw(surface)

@@ -6,6 +6,7 @@ from screens.home import HomeScreen
 from screens.confirm_restart import ConfirmRestartScreen
 from screens.confirm_shutdown import ConfirmShutdownScreen
 from screens.error_screen import ErrorScreen
+from ui.colors import COLOR_BACKGROUND
 from ui.fonts import reset_fonts
 from utils.logger import log_info
 from utils.process import run_application, run_terminal_session
@@ -30,7 +31,7 @@ class Launcher:
         self.active_screen.enter()
 
     def reinit_display(self):
-        """Re-initializes display surface, font cache, and hides cursor."""
+        """Re-initializes display surface, font cache, clears screen, and flushes event queue."""
         pygame.display.init()
         pygame.font.init()
         reset_fonts()
@@ -40,8 +41,13 @@ class Launcher:
             flags |= pygame.FULLSCREEN
 
         self.screen = pygame.display.set_mode((640, 480), flags)
+        self.screen.fill(COLOR_BACKGROUND)
         pygame.mouse.set_visible(False)
         pygame.display.set_caption("DIRT-TOUCH Launcher")
+        pygame.display.flip()
+
+        # Flush buffered events accrued during launch or initialization
+        pygame.event.clear()
 
     def switch_screen(self, screen_name: str, **kwargs):
         if screen_name in self.screens:
@@ -58,6 +64,8 @@ class Launcher:
                 )
                 
             self.active_screen.enter()
+            # Flush input buffer on screen switch to prevent tap leakage
+            pygame.event.clear()
 
     def launch_app(self, script_path: str):
         """Single-owner process launch handling DRM release, execution, font rebuild, and error routing."""
@@ -91,6 +99,22 @@ class Launcher:
         self.reinit_display()
         self.active_screen.enter()
 
+    def system_restart(self):
+        """Cleanly releases DRM Master and restores console TTY before rebooting."""
+        log_info("System restart initiated. Releasing DRM Master...")
+        pygame.display.quit()
+        pygame.quit()
+        os.system("stty sane 2>/dev/null; setterm -cursor on 2>/dev/null; tput cnorm 2>/dev/null")
+        os.system("sudo reboot")
+
+    def system_shutdown(self):
+        """Cleanly releases DRM Master and restores console TTY before shutting down."""
+        log_info("System shutdown initiated. Releasing DRM Master...")
+        pygame.display.quit()
+        pygame.quit()
+        os.system("stty sane 2>/dev/null; setterm -cursor on 2>/dev/null; tput cnorm 2>/dev/null")
+        os.system("sudo shutdown -h now")
+
     def run(self):
         log_info("DIRT-TOUCH launcher started.")
         while self.running:
@@ -109,6 +133,9 @@ class Launcher:
                     self.active_screen.handle_event(event)
             
             self.active_screen.update(dt)
+            
+            # Clear background every frame to prevent visual ghosting
+            self.screen.fill(COLOR_BACKGROUND)
             self.active_screen.draw(self.screen)
             pygame.display.flip()
 
