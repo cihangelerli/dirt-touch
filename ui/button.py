@@ -1,6 +1,6 @@
 # ui/button.py
 import pygame
-from typing import Callable, Optional, Tuple
+from typing import Callable, Optional, Tuple, Union
 from ui.colors import (
     COLOR_APP_BG, COLOR_APP_TEXT,
     COLOR_SYS_BG, COLOR_SYS_TEXT,
@@ -25,31 +25,78 @@ class Button:
         self.style = style
         self.callback = callback
         self.is_pressed = False
+        self.active_pointer_id: Optional[Union[int, str]] = None  # Tracks active finger_id or "mouse"
+
+    def _get_display_size(self) -> Tuple[int, int]:
+        """Dynamically retrieves current display surface size for normalized coordinate mapping."""
+        surface = pygame.display.get_surface()
+        if surface:
+            return surface.get_size()
+        return (640, 480)
+
+    def _normalize_touch_pos(self, event_x: float, event_y: float, display_w: int, display_h: int) -> Tuple[int, int]:
+        """Clamps normalized touch coords (0.0 to 1.0) strictly within active pixel bounds (0..W-1, 0..H-1)."""
+        x = min(display_w - 1, max(0, int(event_x * display_w)))
+        y = min(display_h - 1, max(0, int(event_y * display_h)))
+        return (x, y)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
         if self.style == "DISABLED" or not self.callback:
             return False
 
+        display_w, display_h = self._get_display_size()
+
+        # 1. Standard Mouse Events (Mouse Emulation)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if self.rect.collidepoint(event.pos):
+            if self.active_pointer_id is None and self.rect.collidepoint(event.pos):
                 self.is_pressed = True
+                self.active_pointer_id = "mouse"
                 return True
 
+        elif event.type == pygame.MOUSEMOTION:
+            if self.active_pointer_id == "mouse":
+                if not self.rect.collidepoint(event.pos):
+                    self.is_pressed = False
+                    self.active_pointer_id = None
+
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            if self.is_pressed:
+            if self.active_pointer_id == "mouse":
                 self.is_pressed = False
+                self.active_pointer_id = None
                 if self.rect.collidepoint(event.pos):
                     self.callback()
                     return True
 
-        elif event.type == pygame.MOUSEMOTION:
-            if self.is_pressed and not self.rect.collidepoint(event.pos):
+        # 2. Native Touch Events (with finger_id tracking and coordinate clamping)
+        elif event.type == pygame.FINGERDOWN:
+            finger_id = getattr(event, "finger_id", getattr(event, "touch_id", 0))
+            pos = self._normalize_touch_pos(event.x, event.y, display_w, display_h)
+            if self.active_pointer_id is None and self.rect.collidepoint(pos):
+                self.is_pressed = True
+                self.active_pointer_id = finger_id
+                return True
+
+        elif event.type == pygame.FINGERMOTION:
+            finger_id = getattr(event, "finger_id", getattr(event, "touch_id", 0))
+            if self.active_pointer_id == finger_id:
+                pos = self._normalize_touch_pos(event.x, event.y, display_w, display_h)
+                if not self.rect.collidepoint(pos):
+                    self.is_pressed = False
+                    self.active_pointer_id = None
+
+        elif event.type == pygame.FINGERUP:
+            finger_id = getattr(event, "finger_id", getattr(event, "touch_id", 0))
+            if self.active_pointer_id == finger_id:
+                pos = self._normalize_touch_pos(event.x, event.y, display_w, display_h)
                 self.is_pressed = False
+                self.active_pointer_id = None
+                if self.rect.collidepoint(pos):
+                    self.callback()
+                    return True
 
         return False
 
     def draw(self, surface: pygame.Surface):
-        # Determine colors based on state and style
         if self.style == "DISABLED":
             bg_color = COLOR_DISABLED_BG
             text_color = COLOR_DISABLED_TEXT
@@ -66,11 +113,9 @@ class Button:
             bg_color = COLOR_APP_BG
             text_color = COLOR_APP_TEXT
 
-        # Fill background and draw border
         surface.fill(bg_color, self.rect)
         pygame.draw.rect(surface, COLOR_BORDER, self.rect, width=1)
 
-        # Render Text
         font_large = get_font_large()
         font_small = get_font_small()
 

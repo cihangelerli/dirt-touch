@@ -1,6 +1,7 @@
 # launcher.py
-import pygame
+import os
 import sys
+import pygame
 from screens.home import HomeScreen
 from screens.confirm_restart import ConfirmRestartScreen
 from screens.confirm_shutdown import ConfirmShutdownScreen
@@ -28,9 +29,15 @@ class Launcher:
         self.active_screen.enter()
 
     def reinit_display(self):
-        """Re-creates the SDL surface after terminal/console drops."""
+        """Re-initializes display surface and hides cursor for appliance kiosk mode."""
         pygame.display.init()
-        self.screen = pygame.display.set_mode((640, 480))
+        
+        flags = 0
+        if os.environ.get("SDL_VIDEODRIVER") == "kmsdrm":
+            flags |= pygame.FULLSCREEN
+
+        self.screen = pygame.display.set_mode((640, 480), flags)
+        pygame.mouse.set_visible(False)
         pygame.display.set_caption("DIRT-TOUCH Launcher")
 
     def switch_screen(self, screen_name: str, **kwargs):
@@ -57,6 +64,13 @@ class Launcher:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    # Keyboard shortcuts to exit safely during testing
+                    if event.key in (pygame.K_ESCAPE, pygame.K_q):
+                        log_info("Exit keyboard shortcut pressed.")
+                        self.running = False
+                    elif event.key == pygame.K_c and (event.mod & pygame.KMOD_CTRL):
+                        self.running = False
                 else:
                     self.active_screen.handle_event(event)
             
