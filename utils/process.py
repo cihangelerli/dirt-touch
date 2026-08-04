@@ -1,13 +1,11 @@
 # utils/process.py
 import os
-import sys
 import subprocess
-import pygame
-from typing import Tuple, Optional
+from typing import Tuple
 from utils.logger import log_info, log_error
 
 def run_application(script_path: str) -> Tuple[bool, str, int]:
-    """Executes child app script and returns status, stderr/message, exit_code."""
+    """Executes child app script without touching Pygame display state."""
     log_info(f"Launching application wrapper: {script_path}")
     
     if not os.path.exists(script_path):
@@ -17,9 +15,6 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
         return False, "Permission Denied (EACCES)", 126
 
     try:
-        # Pause Pygame rendering state
-        pygame.display.iconify()
-        
         proc = subprocess.Popen([script_path], stdout=None, stderr=subprocess.PIPE)
         _, stderr = proc.communicate()
         exit_code = proc.returncode
@@ -33,23 +28,14 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
     except Exception as e:
         log_error(f"Execution error for {script_path}: {str(e)}")
         return False, str(e), 1
-    finally:
-        # Guarantee display context remains active
-        if not pygame.display.get_init():
-            pygame.display.init()
 
-def run_terminal_session(launcher=None):
-    """Launches interactive bash shell session with full display re-initialization."""
+def run_terminal_session():
+    """Launches interactive bash shell session with console cleanup."""
     log_info("Executing interactive Terminal session")
     try:
-        pygame.display.quit()
         os.system("clear")
         os.system("bash")
         os.system("stty sane")
         os.system("clear")
-    finally:
-        if launcher:
-            launcher.reinit_display()
-        else:
-            pygame.display.init()
-            pygame.display.set_mode((640, 480))
+    except Exception as e:
+        log_error(f"Terminal session error: {str(e)}")

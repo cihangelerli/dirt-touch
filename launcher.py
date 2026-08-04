@@ -6,7 +6,9 @@ from screens.home import HomeScreen
 from screens.confirm_restart import ConfirmRestartScreen
 from screens.confirm_shutdown import ConfirmShutdownScreen
 from screens.error_screen import ErrorScreen
+from ui.fonts import reset_fonts
 from utils.logger import log_info
+from utils.process import run_application, run_terminal_session
 
 class Launcher:
     def __init__(self):
@@ -16,7 +18,6 @@ class Launcher:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        # Register screen states
         self.screens = {
             "home": HomeScreen(self),
             "confirm_restart": ConfirmRestartScreen(self),
@@ -29,8 +30,10 @@ class Launcher:
         self.active_screen.enter()
 
     def reinit_display(self):
-        """Re-initializes display surface and hides cursor for appliance kiosk mode."""
+        """Re-initializes display surface, font cache, and hides cursor."""
         pygame.display.init()
+        pygame.font.init()
+        reset_fonts()
         
         flags = 0
         if os.environ.get("SDL_VIDEODRIVER") == "kmsdrm":
@@ -56,16 +59,47 @@ class Launcher:
                 
             self.active_screen.enter()
 
+    def launch_app(self, script_path: str):
+        """Single-owner process launch handling DRM release, execution, font rebuild, and error routing."""
+        log_info(f"Launcher managing execution for: {script_path}")
+
+        # 1. Relinquish DRM Master / shut down Pygame completely
+        pygame.display.quit()
+        pygame.quit()
+
+        # 2. Run application via utils.process
+        success, err_msg, exit_code = run_application(script_path)
+
+        # 3. Re-acquire DRM Master and rebuild display + font cache
+        pygame.init()
+        self.reinit_display()
+
+        # 4. Route state
+        if not success:
+            self.switch_screen("error", script=script_path, status=err_msg, code=exit_code)
+        else:
+            self.active_screen.enter()
+
+    def launch_terminal(self):
+        """Single-owner terminal launcher handling DRM release and terminal session."""
+        pygame.display.quit()
+        pygame.quit()
+
+        run_terminal_session()
+
+        pygame.init()
+        self.reinit_display()
+        self.active_screen.enter()
+
     def run(self):
         log_info("DIRT-TOUCH launcher started.")
         while self.running:
-            dt = self.clock.tick(60) / 1000.0  # Target 60 FPS
+            dt = self.clock.tick(60) / 1000.0
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
-                    # Keyboard shortcuts to exit safely during testing
                     if event.key in (pygame.K_ESCAPE, pygame.K_q):
                         log_info("Exit keyboard shortcut pressed.")
                         self.running = False

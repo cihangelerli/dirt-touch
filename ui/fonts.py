@@ -9,13 +9,19 @@ def init_fonts():
     global _font_large, _font_small
     pygame.font.init()
     
-    # Try system monospaced/sans fonts or fallback to default
     try:
         _font_large = pygame.font.SysFont("DejaVu Sans Mono, FreeMono, Monospace", 22, bold=True)
         _font_small = pygame.font.SysFont("DejaVu Sans Mono, FreeMono, Monospace", 14, bold=True)
     except Exception:
         _font_large = pygame.font.Font(None, 24)
         _font_small = pygame.font.Font(None, 16)
+
+def reset_fonts():
+    """Clears cached font references so Pygame safely reinstantiates them after pygame.quit()."""
+    global _font_large, _font_small
+    _font_large = None
+    _font_small = None
+    init_fonts()
 
 def get_font_large() -> pygame.font.Font:
     if _font_large is None:
