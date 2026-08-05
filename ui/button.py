@@ -6,7 +6,7 @@ from ui.colors import (
     COLOR_SYS_BG, COLOR_SYS_TEXT,
     COLOR_DISABLED_BG, COLOR_DISABLED_TEXT,
     COLOR_PRESSED_BG, COLOR_PRESSED_TEXT,
-    COLOR_BORDER
+    COLOR_CANCEL_BG, COLOR_BORDER
 )
 from ui.fonts import get_font_large, get_font_small
 
@@ -41,7 +41,7 @@ class Button:
         return (x, y)
 
     def handle_event(self, event: pygame.event.Event) -> bool:
-        if self.style == "DISABLED" or not self.callback:
+        if self.style in ("DISABLED", "DISABLED_SYS") or not self.callback:
             return False
 
         display_w, display_h = self._get_display_size()
@@ -100,6 +100,9 @@ class Button:
         if self.style == "DISABLED":
             bg_color = COLOR_DISABLED_BG
             text_color = COLOR_DISABLED_TEXT
+        elif self.style == "DISABLED_SYS":
+            bg_color = COLOR_SYS_BG
+            text_color = COLOR_DISABLED_TEXT
         elif self.is_pressed:
             bg_color = COLOR_PRESSED_BG
             text_color = COLOR_PRESSED_TEXT
@@ -107,7 +110,7 @@ class Button:
             bg_color = COLOR_SYS_BG
             text_color = COLOR_SYS_TEXT
         elif self.style == "CANCEL":
-            bg_color = COLOR_APP_BG
+            bg_color = COLOR_CANCEL_BG
             text_color = COLOR_APP_TEXT
         else:  # APP / Default
             bg_color = COLOR_APP_BG

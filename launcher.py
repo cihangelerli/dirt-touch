@@ -6,6 +6,8 @@ from screens.home import HomeScreen
 from screens.confirm_restart import ConfirmRestartScreen
 from screens.confirm_shutdown import ConfirmShutdownScreen
 from screens.error_screen import ErrorScreen
+from screens.system_info import SystemInfoScreen
+from screens.system_settings import SystemSettingsScreen
 from ui.colors import COLOR_BACKGROUND
 from ui.fonts import reset_fonts
 from utils.logger import log_info
@@ -23,8 +25,11 @@ class Launcher:
             "home": HomeScreen(self),
             "confirm_restart": ConfirmRestartScreen(self),
             "confirm_shutdown": ConfirmShutdownScreen(self),
-            "error": ErrorScreen(self)
+            "error": ErrorScreen(self),
+            "system_info": SystemInfoScreen(self),
+            "system_settings": SystemSettingsScreen(self)
         }
+
         
         self.active_screen_name = "home"
         self.active_screen = self.screens[self.active_screen_name]
