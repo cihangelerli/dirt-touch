@@ -3,6 +3,15 @@ import os
 import glob
 from typing import List, Dict, Any
 
+def format_title(title: str) -> str:
+    """Formats 2-word titles onto two lines with newline if not already multiline."""
+    if "\n" in title:
+        return title
+    words = title.split()
+    if len(words) == 2:
+        return f"{words[0]}\n{words[1]}"
+    return title
+
 def discover_applications() -> List[Dict[str, Any]]:
     """Scans $HOME for run_*.sh wrapper scripts and parses metadata tags."""
     home_dir = os.path.expanduser("~")
@@ -44,6 +53,7 @@ def discover_applications() -> List[Dict[str, Any]]:
         except Exception as e:
             pass
             
+        metadata["title"] = format_title(metadata["title"])
         apps.append(metadata)
         
     # Sort primary by DIRT_ORDER, secondary by title

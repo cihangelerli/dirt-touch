@@ -40,6 +40,7 @@ class Launcher:
         pygame.display.init()
         pygame.font.init()
         reset_fonts()
+        self.clock = pygame.time.Clock()
         
         flags = 0
         if os.environ.get("SDL_VIDEODRIVER") == "kmsdrm":
@@ -52,6 +53,7 @@ class Launcher:
         pygame.display.flip()
 
         # Flush buffered events accrued during launch or initialization
+        pygame.event.pump()
         pygame.event.clear()
 
     def switch_screen(self, screen_name: str, **kwargs):

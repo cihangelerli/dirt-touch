@@ -22,7 +22,7 @@ class Scrollbar:
             self.scroll_ratio = max(0.0, min(1.0, current_offset / float(max_scroll)))
         else:
             self.active = False
-            self.thumb_ratio = 0.25
+            self.thumb_ratio = 1.0
             self.scroll_ratio = 0.0
 
     def draw(self, surface: pygame.Surface):

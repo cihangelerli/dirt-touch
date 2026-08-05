@@ -96,6 +96,11 @@ class Button:
 
         return False
 
+    def reset_state(self):
+        """Resets active press and pointer tracking state."""
+        self.is_pressed = False
+        self.active_pointer_id = None
+
     def draw(self, surface: pygame.Surface):
         if self.style == "DISABLED":
             bg_color = COLOR_DISABLED_BG
@@ -128,15 +133,16 @@ class Button:
             total_height += font_small.size(self.subtitle)[1] + 4
 
         start_y = self.rect.centery - (total_height // 2)
+        padding_x = 24
 
         current_y = start_y
         for line in lines:
             txt_surf = font_large.render(line, True, text_color)
-            txt_rect = txt_surf.get_rect(centerx=self.rect.centerx, top=current_y)
+            txt_rect = txt_surf.get_rect(left=self.rect.left + padding_x, top=current_y)
             surface.blit(txt_surf, txt_rect)
             current_y += txt_surf.get_height()
 
         if self.subtitle:
             sub_surf = font_small.render(self.subtitle, True, text_color)
-            sub_rect = sub_surf.get_rect(centerx=self.rect.centerx, top=current_y + 4)
+            sub_rect = sub_surf.get_rect(left=self.rect.left + padding_x, top=current_y + 4)
             surface.blit(sub_surf, sub_rect)

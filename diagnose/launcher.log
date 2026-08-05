@@ -1,0 +1,101 @@
+2026-08-04 15:36:40 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 15:52:50 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 16:13:30 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 16:13:38 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 16:51:45 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 16:51:47 [INFO] Navigating to screen: confirm_restart
+2026-08-04 16:51:49 [INFO] Navigating to screen: home
+2026-08-04 16:51:51 [INFO] Navigating to screen: confirm_restart
+2026-08-04 16:51:55 [INFO] Navigating to screen: home
+2026-08-04 16:51:56 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 16:51:57 [INFO] Navigating to screen: home
+2026-08-04 16:52:04 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-04 16:52:04 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 16:54:05 [INFO] Launcher managing execution for: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:54:05 [INFO] Launching application wrapper: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:55:19 [INFO] Launcher managing execution for: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:55:19 [INFO] Launching application wrapper: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:55:37 [INFO] Launcher managing execution for: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:55:37 [INFO] Launching application wrapper: /home/dirtzero/run_magnetik.sh
+2026-08-04 16:55:53 [INFO] Navigating to screen: confirm_restart
+2026-08-04 17:20:11 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 17:20:29 [INFO] Navigating to screen: confirm_restart
+2026-08-04 17:20:31 [INFO] Navigating to screen: home
+2026-08-04 17:20:34 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 17:20:35 [INFO] System shutdown initiated. Releasing DRM Master...
+2026-08-04 17:24:09 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 17:24:22 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 17:24:26 [INFO] Navigating to screen: home
+2026-08-04 17:24:27 [INFO] Navigating to screen: confirm_restart
+2026-08-04 17:24:28 [INFO] Navigating to screen: home
+2026-08-04 17:24:35 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-04 17:24:36 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 17:26:42 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:26:42 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 17:29:14 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 17:29:22 [INFO] Launcher managing execution for: /home/dirtzero/run_glitchbooth_slide.sh
+2026-08-04 17:29:22 [INFO] Launching application wrapper: /home/dirtzero/run_glitchbooth_slide.sh
+2026-08-04 17:31:02 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 17:31:06 [INFO] Executing interactive Terminal session
+2026-08-04 17:31:21 [INFO] Navigating to screen: confirm_restart
+2026-08-04 17:31:30 [INFO] System restart initiated. Releasing DRM Master...
+2026-08-04 17:39:50 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 17:39:55 [INFO] Navigating to screen: confirm_restart
+2026-08-04 17:40:02 [INFO] System restart initiated. Rebinding fbcon to DRM pipeline...
+2026-08-04 19:43:17 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 19:43:23 [INFO] Launcher managing execution for: /home/dirtzero/run_the_kiss.sh
+2026-08-04 19:43:23 [INFO] Launching application wrapper: /home/dirtzero/run_the_kiss.sh
+2026-08-04 19:44:11 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 19:44:18 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-04 19:44:18 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 19:49:36 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 19:49:37 [INFO] Navigating to screen: home
+2026-08-04 19:49:44 [INFO] Launcher managing execution for: /home/dirtzero/run_magnetik.sh
+2026-08-04 19:49:44 [INFO] Launching application wrapper: /home/dirtzero/run_magnetik.sh
+2026-08-04 20:04:46 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 20:04:58 [INFO] Exit keyboard shortcut pressed.
+2026-08-04 20:07:14 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 20:07:18 [INFO] Launcher managing execution for: /home/dirtzero/run_the_kiss.sh
+2026-08-04 20:07:18 [INFO] Launching application wrapper: /home/dirtzero/run_the_kiss.sh
+2026-08-04 20:19:47 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 20:19:51 [INFO] Launcher managing execution for: /home/dirtzero/run_the_kiss.sh
+2026-08-04 20:19:51 [INFO] Launching application wrapper: /home/dirtzero/run_the_kiss.sh
+2026-08-04 20:20:22 [INFO] Ctrl+C detected. Terminating child process group...
+2026-08-04 20:20:49 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 20:20:52 [INFO] Launcher managing execution for: /home/dirtzero/run_glitchbooth_slide.sh
+2026-08-04 20:20:52 [INFO] Launching application wrapper: /home/dirtzero/run_glitchbooth_slide.sh
+2026-08-04 20:21:41 [INFO] Ctrl+C detected. Terminating child process group...
+2026-08-04 20:21:45 [INFO] Navigating to screen: error
+2026-08-04 20:21:51 [INFO] Navigating to screen: home
+2026-08-04 20:22:02 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-04 20:22:02 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 20:31:59 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 20:31:59 [INFO] System shutdown initiated. Rebinding fbcon to DRM pipeline...
+2026-08-04 21:15:56 [INFO] DIRT-TOUCH launcher started.
+2026-08-04 21:16:05 [INFO] Launcher managing execution for: /home/dirtzero/run_the_kiss.sh
+2026-08-04 21:16:05 [INFO] Launching application wrapper: /home/dirtzero/run_the_kiss.sh
+2026-08-04 21:17:03 [INFO] Ctrl+C detected. Terminating child process group...
+2026-08-04 21:17:07 [INFO] Navigating to screen: error
+2026-08-04 21:17:19 [INFO] Navigating to screen: home
+2026-08-04 21:17:19 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 21:17:21 [INFO] Navigating to screen: home
+2026-08-04 21:18:21 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-04 21:18:21 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-04 22:30:40 [INFO] Launcher managing execution for: /home/dirtzero/run_the_kiss.sh
+2026-08-04 22:30:40 [INFO] Launching application wrapper: /home/dirtzero/run_the_kiss.sh
+2026-08-04 22:31:30 [INFO] Ctrl+C detected. Terminating child process group...
+2026-08-04 22:31:34 [INFO] Navigating to screen: error
+2026-08-04 22:32:48 [INFO] Navigating to screen: home
+2026-08-04 22:32:48 [INFO] Navigating to screen: confirm_shutdown
+2026-08-04 22:32:48 [INFO] System shutdown initiated. Rebinding fbcon to DRM pipeline...
+2026-08-05 10:32:36 [INFO] DIRT-TOUCH launcher started.
+2026-08-05 10:32:57 [INFO] Navigating to screen: confirm_shutdown
+2026-08-05 10:32:59 [INFO] Navigating to screen: home
+2026-08-05 10:37:15 [INFO] Launcher managing execution for: /home/dirtzero/run_badhabits.sh
+2026-08-05 10:37:15 [INFO] Launching application wrapper: /home/dirtzero/run_badhabits.sh
+2026-08-05 10:43:14 [INFO] Navigating to screen: confirm_shutdown

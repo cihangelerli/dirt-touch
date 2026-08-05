@@ -50,6 +50,14 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
         log_error(f"Execution error for {script_path}: {str(e)}")
         return False, str(e), 1
 
+    finally:
+        if proc:
+            try:
+                pgid = os.getpgid(proc.pid)
+                os.killpg(pgid, signal.SIGTERM)
+            except ProcessLookupError:
+                pass
+
 def run_terminal_session():
     """Launches interactive bash shell session with console cleanup."""
     log_info("Executing interactive Terminal session")

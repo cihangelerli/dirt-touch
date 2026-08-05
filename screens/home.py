@@ -16,6 +16,11 @@ class HomeScreen(BaseScreen):
         self.discovered_apps = discover_applications()
         self.build_grid()
 
+    def enter(self):
+        super().enter()
+        for btn in self.buttons:
+            btn.reset_state()
+
     def build_grid(self):
         self.buttons.clear()
         margin_x = 43
@@ -54,7 +59,7 @@ class HomeScreen(BaseScreen):
         # Row 3 Col 0: System Settings (Disabled for Phase 1 with bright orange fill)
         btn_settings = Button(
             rect=pygame.Rect(margin_x, int(3 * row_h), col_w, int(row_h)),
-            text="SYSTEM SETTINGS",
+            text="SYSTEM\nSETTINGS",
             subtitle="UNDER CONSTRUCTION",
             style="DISABLED_SYS",
             callback=None
@@ -70,11 +75,11 @@ class HomeScreen(BaseScreen):
         )
         self.buttons.append(btn_terminal)
 
-        # Row 4 Col 0: Restart Action (TEMPORARILY DISABLED: callback=None)
+        # Row 4 Col 0: Restart Action (TEMPORARILY DISABLED: callback=None, style=DISABLED_SYS)
         btn_restart = Button(
             rect=pygame.Rect(margin_x, int(4 * row_h), col_w, int(row_h)),
             text="RESTART",
-            style="SYS",
+            style="DISABLED_SYS",
             callback=None
         )
         self.buttons.append(btn_restart)
