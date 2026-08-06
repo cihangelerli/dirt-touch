@@ -42,6 +42,10 @@ def find_touchscreen_device(InputDevice, ecodes) -> Optional[str]:
         log_info("Using touchscreen device symlink: /dev/input/touchscreen")
         return "/dev/input/touchscreen"
 
+    if os.path.exists("/dev/input/event2"):
+        log_info("Using hardware touchscreen device: /dev/input/event2")
+        return "/dev/input/event2"
+
     # Auto-discover among /dev/input/event*
     try:
         event_paths = sorted(glob.glob("/dev/input/event*"))

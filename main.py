@@ -15,6 +15,9 @@ if "SDL_TOUCH_DEVICE" not in os.environ:
         os.environ["SDL_TOUCH_DEVICE"] = os.environ["TOUCH_DEVICE"]
     elif os.path.exists("/dev/input/touchscreen"):
         os.environ["SDL_TOUCH_DEVICE"] = "/dev/input/touchscreen"
+    elif os.path.exists("/dev/input/event2"):
+        os.environ["SDL_TOUCH_DEVICE"] = "/dev/input/event2"
+        os.environ["TOUCH_DEVICE"] = "/dev/input/event2"
 
 from utils.logger import setup_logger
 from launcher import Launcher
