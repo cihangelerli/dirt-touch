@@ -104,36 +104,42 @@ def create_hot_corner_monitor():
     and raw X axis (0..479) to Screen Y (0..479).
     """
     try:
-        from evdev import InputDevice, ecodes  # type: ignore  #[cite: 2]
+        from evdev import InputDevice, ecodes  # type: ignore
 
-        device_path = find_touchscreen_device(InputDevice, ecodes)  # [cite: 2]
-        dev = InputDevice(device_path)  # [cite: 2]
+        device_path = find_touchscreen_device(InputDevice, ecodes)
+        dev = InputDevice(device_path)
 
         raw_x_min, raw_x_max = 0, 479
         raw_y_min, raw_y_max = 0, 639
 
         try:
-            caps = dev.capabilities(absval=True)
+            # Query driver capabilities (python-evdev populates AbsInfo automatically)
+            caps = dev.capabilities()
             log_info(f"[INPUT DEV] Connected to {dev.name} ({device_path})")
-            log_info(f"[INPUT DEV] Raw Capabilities: {caps}")
 
-            abs_caps = {code: info for code, info in caps.get(ecodes.EV_ABS, [])}
+            if ecodes.EV_ABS in caps:
+                abs_caps = {
+                    item[0]: item[1]
+                    for item in caps[ecodes.EV_ABS]
+                    if isinstance(item, tuple) and len(item) == 2
+                }
 
-            x_info = abs_caps.get(ecodes.ABS_MT_POSITION_X) or abs_caps.get(
-                ecodes.ABS_X
-            )
-            y_info = abs_caps.get(ecodes.ABS_MT_POSITION_Y) or abs_caps.get(
-                ecodes.ABS_Y
-            )
+                x_info = abs_caps.get(ecodes.ABS_MT_POSITION_X) or abs_caps.get(
+                    ecodes.ABS_X
+                )
+                y_info = abs_caps.get(ecodes.ABS_MT_POSITION_Y) or abs_caps.get(
+                    ecodes.ABS_Y
+                )
 
-            if x_info and x_info.max > x_info.min:
-                raw_x_min, raw_x_max = x_info.min, x_info.max
-            if y_info and y_info.max > y_info.min:
-                raw_y_min, raw_y_max = y_info.min, y_info.max
+                if x_info and hasattr(x_info, "max") and x_info.max > x_info.min:
+                    raw_x_min, raw_x_max = x_info.min, x_info.max
+                if y_info and hasattr(y_info, "max") and y_info.max > y_info.min:
+                    raw_y_min, raw_y_max = y_info.min, y_info.max
+
         except Exception as e:
             log_error(f"Error reading touch device capabilities: {e}")
 
-        # Map digitizer Y (0..639) to Screen X (0..639)[cite: 2]
+        # Map digitizer Y (0..639) to Screen X (0..639)
         def scale_x(raw_y_val: int) -> int:
             if raw_y_max > raw_y_min:
                 scaled = int(
@@ -142,7 +148,7 @@ def create_hot_corner_monitor():
                 return max(0, min(SCREEN_W - 1, scaled))
             return max(0, min(SCREEN_W - 1, raw_y_val))
 
-        # Map digitizer X (0..479) to Screen Y (0..479)[cite: 2]
+        # Map digitizer X (0..479) to Screen Y (0..479)
         def scale_y(raw_x_val: int) -> int:
             if raw_x_max > raw_x_min:
                 scaled = int(
@@ -158,7 +164,7 @@ def create_hot_corner_monitor():
         return dev, ecodes, scale_x, scale_y
 
     except Exception as e:
-        log_error(f"Hot corner monitor initialization unavailable: {e}")  # [cite: 2]
+        log_error(f"Hot corner monitor initialization unavailable: {e}")
         return None, None, None, None
 
 
