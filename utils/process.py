@@ -133,7 +133,8 @@ def create_hot_corner_monitor():
                 scaled = int(
                     (raw_y_val - raw_y_min) * (SCREEN_W - 1) / (raw_y_max - raw_y_min)
                 )
-                return max(0, min(SCREEN_W - 1, scaled))
+                # Invert X axis so low raw_y maps to top-right (screen_x near 639)
+                return max(0, min(SCREEN_W - 1, (SCREEN_W - 1) - scaled))
             return max(0, min(SCREEN_W - 1, raw_y_val))
 
         def scale_y(raw_x_val: int) -> int:
@@ -141,7 +142,8 @@ def create_hot_corner_monitor():
                 scaled = int(
                     (raw_x_val - raw_x_min) * (SCREEN_H - 1) / (raw_x_max - raw_x_min)
                 )
-                return max(0, min(SCREEN_H - 1, scaled))
+                # Invert Y axis so high raw_x maps to top edge (screen_y near 0)
+                return max(0, min(SCREEN_H - 1, (SCREEN_H - 1) - scaled))
             return max(0, min(SCREEN_H - 1, raw_x_val))
 
         log_info(
