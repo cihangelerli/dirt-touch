@@ -507,12 +507,16 @@ dirt-touch/
 
 ## 20. Future Expansion
 
-- Multi-page grid pagination for discovered wrappers (>6 apps).
-- Screensaver implementation for display protection.
+- not defined yet...
 
-- Hardware diagnostic panels.
+## 21. NOTES:
 
-- Remote management integration.
+- phase 1 implemented main screen, confirmation screens, error screen, app lauch and exit, shutdown, terminal, PLUS hot corner touch exit for running apps which was out of scope of this document.
+
+- run the main.py with "DEBUG_TOUCH=1 python3 main.py" to log all touch events to l0gs/launcher.log file for debugging touch related issues.
+
+- phase 2 goal: system settings and related screens
+
 
 ## Powered by [**Dirtcake Studio**](https://dirtcakestudio.com)
 
