@@ -60,18 +60,19 @@ class HomeScreen(BaseScreen):
         )
         self.buttons.append(btn_settings)
 
-        # Row 3 Col 1: Restart Action (TEMPORARILY DISABLED: callback=None, style=DISABLED_SYS)
+        # Row 4 Col 0: Restart Action (TEMPORARILY DISABLED: callback=None, style=DISABLED_SYS)
         btn_restart = Button(
-            rect=pygame.Rect(margin_x, int(3 * row_h), col_w, int(row_h)),
+            rect=pygame.Rect(margin_x + col_w, int(3 * row_h), col_w, int(row_h)),
             text="RESTART",
             style="DISABLED_SYS",
             callback=None,
         )
-        self.buttons.append(btn_restart)
+        # self.buttons.append(btn_restart)
+        self.buttons.append(None)  # Placeholder for disabled button
 
-        # Row 4 Col 0:  Terminal Action
+        # Row 3 Col 1: Terminal Action
         btn_terminal = Button(
-            rect=pygame.Rect(margin_x + col_w, int(4 * row_h), col_w, int(row_h)),
+            rect=pygame.Rect(margin_x, int(4 * row_h), col_w, int(row_h)),
             text="TERMINAL",
             style="SYS",
             callback=self.app.launch_terminal,
