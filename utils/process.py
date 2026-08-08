@@ -4,7 +4,7 @@ import select
 import signal
 import subprocess
 import time
-from typing import Optional, Tuple
+from typing import Optional, Tuple  # type: ignore
 
 from utils.logger import log_error, log_info
 
