@@ -90,6 +90,8 @@ The launcher itself becomes the operating interface.
 
 The launcher shall be implemented entirely using **Pygame**.
 
+requirements to install can be found in requirements.txt
+
 Reasons:
 
 - No Qt, No Electron, No browser UI, No HTML frontend.
@@ -164,6 +166,8 @@ No screen should know how another screen draws itself.
 ## 6. Core Application Architecture & Automatic Discovery
 
 DIRT-TOUCH **never** contains a hardcoded list of user applications. The application grid is dynamically generated from discovered wrapper scripts in the user's home directory (`$HOME`).
+
+### Sample Scripts can be found on /sample_shortcuts folder
 
 ### Shell Wrapper Public API Contract
 
@@ -248,7 +252,6 @@ exec cog https://glitchbooth.online/slideshow
 
 If no `DIRT_TITLE` is present, `run_glitchbooth_slideshow.sh` automatically formats to `GLITCHBOOTH SLIDESHOW`.
 
-### Sample Scripts can be found on /sample_shortcuts folder
 
 ---
 
