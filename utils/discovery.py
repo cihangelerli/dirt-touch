@@ -3,6 +3,8 @@ import glob
 import os
 from typing import Any, Dict, List  # type: ignore
 
+from utils.logger import log_error
+
 
 def format_title(title: str) -> str:
     """Formats 2-word titles onto two lines with newline if not already multiline."""
@@ -59,7 +61,7 @@ def discover_applications() -> List[Dict[str, Any]]:
                     elif line.startswith("# DIRT_COLOR="):
                         metadata["color"] = line.split("=", 1)[1].strip()
         except Exception as e:
-            pass
+            log_error(f"Error reading metadata from {path}: {e}")
 
         metadata["title"] = format_title(metadata["title"])
         apps.append(metadata)

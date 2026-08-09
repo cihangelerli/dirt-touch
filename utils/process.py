@@ -76,8 +76,8 @@ def find_touchscreen_device(InputDevice, ecodes) -> Optional[str]:
                             dev.close()
                             return path
                 dev.close()
-            except Exception:
-                pass
+            except Exception as e:
+                log_error(f"Unexpected error during touchscreen auto-discovery: {e}")
     except Exception as e:
         log_error(f"Error during touchscreen auto-discovery: {e}")
 
@@ -285,8 +285,8 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
             finally:
                 try:
                     dev.close()
-                except Exception:
-                    pass
+                except Exception as e:
+                    log_error(f"Unexpected error while closing touchscreen device: {e}")
 
         # Drain process output
         stderr = b""
@@ -295,7 +295,8 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
         else:
             try:
                 stderr = proc.stderr.read() if proc.stderr else b""
-            except Exception:
+            except Exception as e:
+                log_error(f"Unexpected error while reading process stderr: {e}")
                 stderr = b""
 
         exit_code = proc.returncode

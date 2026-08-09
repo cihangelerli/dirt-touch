@@ -3,6 +3,8 @@ import os
 import socket
 import subprocess
 
+from utils.logger import log_error
+
 '''
 # disabled because actual shutdown and reboot functions are located in launcher.py
 
@@ -20,8 +22,8 @@ def execute_shutdown():
 def get_hostname() -> str:
     try:
         return socket.gethostname()
-    except Exception:
-        print("Error retrieving hostname")
+    except Exception as e:
+        log_error(f"Error retrieving hostname: {e}")
         return "UNKNOWN HOST"
 
 
@@ -30,16 +32,16 @@ def get_pi_model() -> str:
         if os.path.exists("/proc/device-tree/model"):
             with open("/proc/device-tree/model", "r") as f:
                 return f.read().strip("\x00\n")
-    except Exception:
-        print("Error reading Pi model")
+    except Exception as e:
+        log_error(f"Error reading Pi model: {e}")
         return "UNKNOWN MODEL"
 
 
 def get_os_kernel() -> str:
     try:
         return subprocess.check_output(["uname", "-sr"]).decode("utf-8").strip()
-    except Exception:
-        print("Error retrieving OS kernel version")
+    except Exception as e:
+        log_error(f"Error retrieving OS kernel version: {e}")
         return "UNKNOWN KERNEL"
 
 
@@ -51,8 +53,8 @@ def get_mac_address() -> str:
             .strip()
         )
         return res.upper()
-    except Exception:
-        print("Error retrieving MAC address")
+    except Exception as e:
+        log_error(f"Error retrieving MAC address: {e}")
         return "UNKNOWN MAC ADDRESS"
 
 
@@ -63,8 +65,8 @@ def get_uptime() -> str:
             hours = int(seconds // 3600)
             mins = int((seconds % 3600) // 60)
             return f"{hours} H {mins} M"
-    except Exception:
-        print("Error retrieving uptime")
+    except Exception as e:
+        log_error(f"Error retrieving uptime: {e}")
         return "UPTIME UNKNOWN"
 
 
@@ -75,8 +77,8 @@ def get_disk_usage() -> str:
         total_mb = (st.f_blocks * st.f_frsize) // (1024 * 1024)
         used_mb = total_mb - free_mb
         return f"{used_mb} MB OF {total_mb} MB"
-    except Exception:
-        print("Error retrieving disk usage")
+    except Exception as e:
+        log_error(f"Error retrieving disk usage: {e}")
         return "DISK USAGE UNKNOWN"
 
 
@@ -86,8 +88,8 @@ def get_cpu_temp() -> str:
             with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
                 temp_c = int(f.read().strip()) // 1000
                 return f"{temp_c} ° C"
-    except Exception:
-        print("Error reading CPU temperature")
+    except Exception as e:
+        log_error(f"Error reading CPU temperature: {e}")
         return "CPU TEMP UNKNOWN"
 
 
@@ -104,6 +106,6 @@ def get_ram_usage() -> str:
                     mem_available = int(line.split()[1]) // 1024
             mem_used = mem_total - mem_available
             return f"{mem_used} MB OF {mem_total} MB"
-    except Exception:
-        print("Error retrieving RAM usage")
+    except Exception as e:
+        log_error(f"Error retrieving RAM usage: {e}")
         return "RAM USAGE UNKNOWN"

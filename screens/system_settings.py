@@ -24,17 +24,29 @@ class SystemSettingsScreen(BaseScreen):
         items = [
             # Row 0
             ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
-            ("WiFi", "APP", None),
+            ("WiFi", "DISABLED", None),
             # Row 1
-            ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
-            ("CALIBRATE\nTOUCH", "APP", None),
+            ("CONFIG", "DISABLED", None),
+            ("CMDLINE", "DISABLED", None),
             # Row 2
-            ("CONFIG", "APP", None),
-            ("HTOP", "APP", None),
+            ("HTOP", "DISABLED", None),
+            ("UPDATE ALL", "DISABLED", None),
             # Row 3
-            ("RESTART\nDIRT-TOUCH", "APP", None),
+            ("RESTART\nDIRT-TOUCH", "DISABLED", None),
             ("BACK", "SYS", lambda: self.app.switch_screen("home")),
         ]
+
+        """
+        # phase 2: implement these buttons with actual functionality
+        # hot corner detection and exit should work for these in case no keyboard present
+        # Probably will need sudo permission to run these commands
+        WIFI > sudo nmtui
+        CONFIG > sudo nano /boot/config.txt
+        CMDLINE > sudo nano /boot/cmdline.txt
+        HTOP > htop
+        UPDATE ALL > sudo apt update && sudo apt upgrade -y
+        RESTART DIRT-TOUCH > sudo systemctl daemon-reload && sudo systemctl restart dirt-touch.service
+        """
 
         for i, (text, style, cb) in enumerate(items):
             r = i // 2
