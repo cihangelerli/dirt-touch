@@ -3,6 +3,8 @@ import os
 import socket
 import subprocess
 
+'''
+# disabled because actual shutdown and reboot functions are located in launcher.py
 
 def execute_restart():
     """Triggers system reboot."""
@@ -12,6 +14,7 @@ def execute_restart():
 def execute_shutdown():
     """Triggers system shutdown."""
     subprocess.Popen(["sudo", "shutdown", "-h", "now"])
+'''
 
 
 def get_hostname() -> str:

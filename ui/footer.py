@@ -18,7 +18,7 @@ class Footer:
         self.wifi_raw = "WiFi IIII_"
         self.ip_str = get_ip_address()
         self.version_prefix = "DIRT-TOUCH"
-        self.version_suffix = "-v0.3"
+        self.version_suffix = "-v1.1"
 
     def update(self, dt: float):
         now = time.time()
