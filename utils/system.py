@@ -18,7 +18,8 @@ def get_hostname() -> str:
     try:
         return socket.gethostname()
     except Exception:
-        return "HOST"
+        print("Error retrieving hostname")
+        return "UNKNOWN HOST"
 
 
 def get_pi_model() -> str:
@@ -28,14 +29,14 @@ def get_pi_model() -> str:
                 return f.read().strip("\x00\n")
     except Exception:
         print("Error reading Pi model")
-        pass
-    return "UNKNOWN MODEL"
+        return "UNKNOWN MODEL"
 
 
 def get_os_kernel() -> str:
     try:
         return subprocess.check_output(["uname", "-sr"]).decode("utf-8").strip()
     except Exception:
+        print("Error retrieving OS kernel version")
         return "UNKNOWN KERNEL"
 
 
@@ -48,6 +49,7 @@ def get_mac_address() -> str:
         )
         return res.upper()
     except Exception:
+        print("Error retrieving MAC address")
         return "UNKNOWN MAC ADDRESS"
 
 
@@ -59,7 +61,8 @@ def get_uptime() -> str:
             mins = int((seconds % 3600) // 60)
             return f"{hours} H {mins} M"
     except Exception:
-        return "UNKNOWN UPTIME"
+        print("Error retrieving uptime")
+        return "UPTIME UNKNOWN"
 
 
 def get_disk_usage() -> str:
@@ -70,6 +73,7 @@ def get_disk_usage() -> str:
         used_mb = total_mb - free_mb
         return f"{used_mb} MB OF {total_mb} MB"
     except Exception:
+        print("Error retrieving disk usage")
         return "DISK USAGE UNKNOWN"
 
 
@@ -81,8 +85,7 @@ def get_cpu_temp() -> str:
                 return f"{temp_c} ° C"
     except Exception:
         print("Error reading CPU temperature")
-        pass
-    return "CPU TEMP UNKNOWN"
+        return "CPU TEMP UNKNOWN"
 
 
 def get_ram_usage() -> str:
@@ -99,4 +102,5 @@ def get_ram_usage() -> str:
             mem_used = mem_total - mem_available
             return f"{mem_used} MB OF {mem_total} MB"
     except Exception:
+        print("Error retrieving RAM usage")
         return "RAM USAGE UNKNOWN"
