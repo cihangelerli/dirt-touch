@@ -1,28 +1,39 @@
 # screens/system_info.py
 import pygame
+
 from screens.base_screen import BaseScreen
 from ui.button import Button
-from ui.footer import Footer
-from ui.colors import COLOR_BACKGROUND, COLOR_TEXT_ORANGE, COLOR_MUTED_BROWN
+from ui.colors import COLOR_BACKGROUND, COLOR_MUTED_BROWN, COLOR_TEXT_ORANGE
 from ui.fonts import get_font_large
-from utils.system import get_hostname, get_pi_model, get_os_kernel, get_mac_address, get_uptime, get_disk_usage, get_cpu_temp, get_ram_usage
+from ui.footer import Footer
 from utils.network import get_ip_address
+from utils.system import (
+    get_cpu_temp,
+    get_disk_usage,
+    get_hostname,
+    get_mac_address,
+    get_os_kernel,
+    get_pi_model,
+    get_ram_usage,
+    get_uptime,
+)
+
 
 class SystemInfoScreen(BaseScreen):
     def __init__(self, app_state_manager):
         super().__init__(app_state_manager)
         self.footer = Footer(pygame.Rect(0, 444, 640, 36))
-        
+
         margin_x = 43
         col_w = 270
         btn_y = 355
         btn_height = 89
-        
+
         self.btn_back = Button(
             rect=pygame.Rect(margin_x + col_w, btn_y, col_w, btn_height),
             text="BACK",
             style="SYS",
-            callback=lambda: self.app.switch_screen("system_settings")
+            callback=lambda: self.app.switch_screen("system_settings"),
         )
 
     def update(self, dt: float):

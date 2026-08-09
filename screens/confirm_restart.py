@@ -1,16 +1,18 @@
 # screens/confirm_restart.py
 import pygame
+
 from screens.base_screen import BaseScreen
 from ui.button import Button
-from ui.footer import Footer
-from ui.fonts import get_font_large
 from ui.colors import COLOR_APP_TEXT, COLOR_BACKGROUND
+from ui.fonts import get_font_large
+from ui.footer import Footer
+
 
 class ConfirmRestartScreen(BaseScreen):
     def __init__(self, app_state_manager):
         super().__init__(app_state_manager)
         self.footer = Footer(pygame.Rect(0, 444, 640, 36))
-        
+
         # Bottom action bar aligned with grid bounds (X=43..583, Y=355..444)
         margin_x = 43
         col_w = 270
@@ -21,13 +23,13 @@ class ConfirmRestartScreen(BaseScreen):
             rect=pygame.Rect(margin_x, btn_y, col_w, btn_height),
             text="CANCEL",
             style="CANCEL",
-            callback=lambda: self.app.switch_screen("home")
+            callback=lambda: self.app.switch_screen("home"),
         )
         self.btn_confirm = Button(
             rect=pygame.Rect(margin_x + col_w, btn_y, col_w, btn_height),
             text="RESTART",
             style="SYS",
-            callback=lambda: self.app.system_restart()
+            callback=lambda: self.app.system_restart(),
         )
         self.buttons = [self.btn_cancel, self.btn_confirm]
 
@@ -51,14 +53,16 @@ class ConfirmRestartScreen(BaseScreen):
         pygame.draw.line(surface, COLOR_APP_TEXT, (43, 100), (597, 100), 2)
 
         # Body prompt lines
-        line1_surf = font.render("> THE DEVICE WILL BE RESTARTED,", True, COLOR_APP_TEXT)
+        line1_surf = font.render(
+            "> THE DEVICE WILL BE RESTARTED,", True, COLOR_APP_TEXT
+        )
         line2_surf = font.render("> DO YOU WANT TO PROCEED?", True, COLOR_APP_TEXT)
-        
+
         surface.blit(line1_surf, (68, 200))
         surface.blit(line2_surf, (68, 242))
 
         # Bottom buttons & footer
         for btn in self.buttons:
             btn.draw(surface)
-            
+
         self.footer.draw(surface)

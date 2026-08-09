@@ -1,9 +1,11 @@
 # screens/system_settings.py
 import pygame
+
 from screens.base_screen import BaseScreen
 from ui.button import Button
-from ui.footer import Footer
 from ui.colors import COLOR_BACKGROUND, COLOR_TEXT_ORANGE
+from ui.footer import Footer
+
 
 class SystemSettingsScreen(BaseScreen):
     def __init__(self, app_state_manager):
@@ -53,6 +55,7 @@ class SystemSettingsScreen(BaseScreen):
         surface.fill(COLOR_BACKGROUND)
         font = pygame.font.Font(None, 28)
         from ui.fonts import get_font_large
+
         font = get_font_large()
 
         # 1. Top-right header title: "// SYSTEM SETTINGS" in #FF7700 orange

@@ -3,13 +3,16 @@ import os
 import socket
 import subprocess
 
+
 def execute_restart():
     """Triggers system reboot."""
     subprocess.Popen(["sudo", "reboot"])
 
+
 def execute_shutdown():
     """Triggers system shutdown."""
     subprocess.Popen(["sudo", "shutdown", "-h", "now"])
+
 
 def get_hostname() -> str:
     try:
@@ -17,27 +20,36 @@ def get_hostname() -> str:
     except Exception:
         return "HOST"
 
+
 def get_pi_model() -> str:
     try:
         if os.path.exists("/proc/device-tree/model"):
             with open("/proc/device-tree/model", "r") as f:
                 return f.read().strip("\x00\n")
     except Exception:
+        print("Error reading Pi model")
         pass
-    return "ZERO 2 W"
+    return "UNKNOWN MODEL"
+
 
 def get_os_kernel() -> str:
     try:
         return subprocess.check_output(["uname", "-sr"]).decode("utf-8").strip()
     except Exception:
-        return "PI OS LITE"
+        return "UNKNOWN KERNEL"
+
 
 def get_mac_address() -> str:
     try:
-        res = subprocess.check_output(["cat", "/sys/class/net/wlan0/address"]).decode("utf-8").strip()
+        res = (
+            subprocess.check_output(["cat", "/sys/class/net/wlan0/address"])
+            .decode("utf-8")
+            .strip()
+        )
         return res.upper()
     except Exception:
-        return "AA : BB : CC : DD : EE : FF : GG"
+        return "UNKNOWN MAC ADDRESS"
+
 
 def get_uptime() -> str:
     try:
@@ -47,7 +59,8 @@ def get_uptime() -> str:
             mins = int((seconds % 3600) // 60)
             return f"{hours} H {mins} M"
     except Exception:
-        return "22 H 41 M"
+        return "UNKNOWN UPTIME"
+
 
 def get_disk_usage() -> str:
     try:
@@ -57,7 +70,8 @@ def get_disk_usage() -> str:
         used_mb = total_mb - free_mb
         return f"{used_mb} MB OF {total_mb} MB"
     except Exception:
-        return "147 MB OF 64000 MB"
+        return "DISK USAGE UNKNOWN"
+
 
 def get_cpu_temp() -> str:
     try:
@@ -66,8 +80,10 @@ def get_cpu_temp() -> str:
                 temp_c = int(f.read().strip()) // 1000
                 return f"{temp_c} ° C"
     except Exception:
+        print("Error reading CPU temperature")
         pass
-    return "57 ° C"
+    return "CPU TEMP UNKNOWN"
+
 
 def get_ram_usage() -> str:
     try:
@@ -83,4 +99,4 @@ def get_ram_usage() -> str:
             mem_used = mem_total - mem_available
             return f"{mem_used} MB OF {mem_total} MB"
     except Exception:
-        return "117 MB OF 512 MB"
+        return "RAM USAGE UNKNOWN"

@@ -1,14 +1,22 @@
 # ui/button.py
+from typing import Callable, Optional, Tuple, Union  # type: ignore
+
 import pygame
-from typing import Callable, Optional, Tuple, Union
+
 from ui.colors import (
-    COLOR_APP_BG, COLOR_APP_TEXT,
-    COLOR_SYS_BG, COLOR_SYS_TEXT,
-    COLOR_DISABLED_BG, COLOR_DISABLED_TEXT,
-    COLOR_PRESSED_BG, COLOR_PRESSED_TEXT,
-    COLOR_CANCEL_BG, COLOR_BORDER
+    COLOR_APP_BG,
+    COLOR_APP_TEXT,
+    COLOR_BORDER,
+    COLOR_CANCEL_BG,
+    COLOR_DISABLED_BG,
+    COLOR_DISABLED_TEXT,
+    COLOR_PRESSED_BG,
+    COLOR_PRESSED_TEXT,
+    COLOR_SYS_BG,
+    COLOR_SYS_TEXT,
 )
 from ui.fonts import get_font_large, get_font_small
+
 
 class Button:
     def __init__(
@@ -17,7 +25,7 @@ class Button:
         text: str,
         subtitle: Optional[str] = None,
         style: str = "APP",  # "APP", "SYS", "DISABLED", "CANCEL"
-        callback: Optional[Callable[[], None]] = None
+        callback: Optional[Callable[[], None]] = None,
     ):
         self.rect = rect
         self.text = text
@@ -25,7 +33,9 @@ class Button:
         self.style = style
         self.callback = callback
         self.is_pressed = False
-        self.active_pointer_id: Optional[Union[int, str]] = None  # Tracks active finger_id or "mouse"
+        self.active_pointer_id: Optional[Union[int, str]] = (
+            None  # Tracks active finger_id or "mouse"
+        )
 
     def _get_display_size(self) -> Tuple[int, int]:
         """Dynamically retrieves current display surface size for normalized coordinate mapping."""
@@ -34,7 +44,9 @@ class Button:
             return surface.get_size()
         return (640, 480)
 
-    def _normalize_touch_pos(self, event_x: float, event_y: float, display_w: int, display_h: int) -> Tuple[int, int]:
+    def _normalize_touch_pos(
+        self, event_x: float, event_y: float, display_w: int, display_h: int
+    ) -> Tuple[int, int]:
         """Clamps normalized touch coords (0.0 to 1.0) strictly within active pixel bounds (0..W-1, 0..H-1)."""
         x = min(display_w - 1, max(0, int(event_x * display_w)))
         y = min(display_h - 1, max(0, int(event_y * display_h)))
@@ -144,5 +156,7 @@ class Button:
 
         if self.subtitle:
             sub_surf = font_small.render(self.subtitle, True, text_color)
-            sub_rect = sub_surf.get_rect(left=self.rect.left + padding_x, top=current_y + 4)
+            sub_rect = sub_surf.get_rect(
+                left=self.rect.left + padding_x, top=current_y + 4
+            )
             surface.blit(sub_surf, sub_rect)

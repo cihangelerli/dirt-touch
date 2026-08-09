@@ -1,6 +1,7 @@
 # screens/base_screen.py
 import pygame
 
+
 class BaseScreen:
     def __init__(self, app_state_manager):
         self.app = app_state_manager

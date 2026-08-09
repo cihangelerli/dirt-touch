@@ -21,11 +21,20 @@ trap cleanup EXIT INT TERM
 
 setterm -cursor off 2>/dev/null
 
-# --input-terminal=yes and --input-vo-keyboard=yes enable ESC -> quit on KMSDRM
 /usr/bin/mpv \
+    --no-audio \
     --vo=gpu \
     --gpu-context=drm \
     --loop-file=inf \
     --input-terminal=yes \
     --input-vo-keyboard=yes \
     "$HOME/video/the_kiss.mp4"
+
+EXIT_CODE=$?
+
+# Convert mpv signal shutdown (code 4, 130, 143) into clean exit status 0
+if [ $EXIT_CODE -eq 4 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
+    exit 0
+fi
+
+exit $EXIT_CODE

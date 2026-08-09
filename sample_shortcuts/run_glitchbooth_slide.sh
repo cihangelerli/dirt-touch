@@ -32,4 +32,11 @@ trap cleanup EXIT INT TERM
 
 # Run cog to display glitchbooth slideshow
 cog https://glitchbooth.online/slideshow
+EXIT_CODE=$?
 
+# If cog exited via SIGSEGV (139) or SIGINT/SIGTERM (130/143), treat as clean exit
+if [ $EXIT_CODE -eq 139 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
+    exit 0
+fi
+
+exit $EXIT_CODE

@@ -76,7 +76,7 @@ The UI should appear as though it belongs to the hardware itself.
 
 The launcher itself becomes the operating interface.
 
-### Display
+### Optimized for Current Display
 
 - $640 \times 480$ resolution
 
@@ -247,6 +247,8 @@ exec cog https://glitchbooth.online/slideshow
 2. **Secondary:** If no `DIRT_ORDER` tag exists, sort alphabetically by formatted title/filename.
 
 If no `DIRT_TITLE` is present, `run_glitchbooth_slideshow.sh` automatically formats to `GLITCHBOOTH SLIDESHOW`.
+
+### Sample Scripts can be found on /sample_shortcuts folder
 
 ---
 
@@ -516,7 +518,6 @@ dirt-touch/
 - run the main.py with "DEBUG_TOUCH=1 python3 main.py" to log all touch events to l0gs/launcher.log file for debugging touch related issues.
 
 - phase 2 goal: system settings and related screens
-
 
 ## Powered by [**Dirtcake Studio**](https://dirtcakestudio.com)
 
