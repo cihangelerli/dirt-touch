@@ -389,13 +389,10 @@ def run_terminal_session():
 
     proc = None
     try:
-        # 1. Spawn openvt asynchronously as a child process
-        proc = subprocess.Popen(
-            ["sudo", "openvt", "-c", "2", "-s", "-w", "--", "su", "-", "dirtzero"],
-            start_new_session=True,
-        )
+        # Launch openvt via shell execution so it retains console TTY context
+        # (Do NOT use start_new_session=True as it breaks openvt session allocation)
+        proc = subprocess.Popen("sudo openvt -c 2 -s -w -- su - dirtzero", shell=True)
 
-        # 2. Touchscreen event loop (runs while openvt is active)
         if use_hot_corner:
             x, y = 0, 0
             touch_down = False
@@ -403,6 +400,13 @@ def run_terminal_session():
             press_start = 0.0
             terminating = False
             fd = dev.fd
+
+            # Drain any stale event buffer backlog before entering loop
+            try:
+                while dev.read():
+                    pass
+            except (IOError, OSError):
+                pass
 
             while proc.poll() is None:
                 r, _, _ = select.select([fd], [], [], 0.05)
@@ -440,7 +444,7 @@ def run_terminal_session():
                             if not touch_down:
                                 started_in_corner = False
 
-                # Check for 1.2s hold in top-right hot corner
+                # Evaluate 1.2s hold in top-right corner
                 if touch_down:
                     if is_in_hot_corner(x, y):
                         if not started_in_corner:
@@ -451,20 +455,19 @@ def run_terminal_session():
                             and not terminating
                         ):
                             log_info(
-                                "Hot corner exit triggered in Terminal! Killing openvt..."
+                                "Hot corner exit triggered in Terminal! Killing openvt session..."
                             )
                             terminating = True
-                            # Force terminate openvt process
-                            os.system(f"sudo kill -9 {proc.pid} 2>/dev/null")
                             os.system("sudo pkill -9 -f openvt 2>/dev/null")
+                            os.system("sudo pkill -9 -t tty2 2>/dev/null")
                             break
                     else:
                         started_in_corner = False
                 else:
                     started_in_corner = False
 
-        # Wait for terminal process to exit (either via 'exit' or hot corner)
-        proc.wait()
+        if proc:
+            proc.wait()
 
     except Exception as e:
         log_error(f"Terminal session error: {str(e)}")
