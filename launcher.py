@@ -103,18 +103,21 @@ class Launcher:
         """Single-owner terminal launcher handling DRM release and terminal session."""
         log_info("Releasing DRM/VT for Terminal session...")
 
-        pygame.display.quit()
-        pygame.quit()
+        # pygame.display.quit()
+        # pygame.quit()
 
         # Re-attach kernel console to VT1 and reset keyboard mode
         # os.system("sudo chvt 1 2>/dev/null")
         # os.system("sudo kbd_mode -a 2>/dev/null")
 
-        run_terminal_session()
+        # run_terminal_session()
 
-        pygame.init()
-        self.reinit_display()
-        self.active_screen.enter()
+        # pygame.init()
+        # self.reinit_display()
+        # self.active_screen.enter()
+
+        script_path = os.path.expanduser("~/terminal.sh")
+        self.launch_app(script_path)
 
     def system_restart(self):
         """Rebinds fbcon to DRM plane via VT switch, cleanly exits Python, and reboots."""
