@@ -116,7 +116,7 @@ class Launcher:
         # self.reinit_display()
         # self.active_screen.enter()
 
-        script_path = os.path.expanduser("~/terminal.sh")
+        script_path = os.path.expanduser("~/run_terminal.sh")
         self.launch_app(script_path)
 
     def system_restart(self):
