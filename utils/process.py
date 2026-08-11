@@ -362,7 +362,7 @@ def run_terminal_session():
         log_error(f"Terminal session error: {str(e)}")
 '''
 
-
+'''
 def run_terminal_session():
     """Spawns interactive shell on a fresh Virtual Terminal (VT2) and waits for exit."""
     log_info("Executing interactive Terminal session on VT2")
@@ -377,3 +377,102 @@ def run_terminal_session():
         os.system("sudo chvt 1")
     except Exception as e:
         log_error(f"Terminal session error: {str(e)}")
+'''
+
+
+def run_terminal_session():
+    """Spawns interactive shell on VT2 with active touch hot-corner monitoring."""
+    log_info("Executing interactive Terminal session on VT2 with hot corner monitor")
+
+    dev, ecodes, scale_x, scale_y = create_hot_corner_monitor()
+    use_hot_corner = dev is not None
+
+    proc = None
+    try:
+        # 1. Spawn openvt asynchronously as a child process
+        proc = subprocess.Popen(
+            ["sudo", "openvt", "-c", "2", "-s", "-w", "--", "su", "-", "dirtzero"],
+            start_new_session=True,
+        )
+
+        # 2. Touchscreen event loop (runs while openvt is active)
+        if use_hot_corner:
+            x, y = 0, 0
+            touch_down = False
+            started_in_corner = False
+            press_start = 0.0
+            terminating = False
+            fd = dev.fd
+
+            while proc.poll() is None:
+                r, _, _ = select.select([fd], [], [], 0.05)
+                if r:
+                    try:
+                        events = dev.read()
+                    except (IOError, OSError):
+                        events = []
+
+                    for event in events:
+                        if event.type == ecodes.EV_ABS:
+                            if event.code in (
+                                ecodes.ABS_Y,
+                                ecodes.ABS_MT_POSITION_Y,
+                            ):
+                                x = scale_x(event.value)
+                                touch_down = True
+                            elif event.code in (
+                                ecodes.ABS_X,
+                                ecodes.ABS_MT_POSITION_X,
+                            ):
+                                y = scale_y(event.value)
+                                touch_down = True
+                            elif event.code == ecodes.ABS_MT_TRACKING_ID:
+                                if event.value == -1:
+                                    touch_down = False
+                                    started_in_corner = False
+                                else:
+                                    touch_down = True
+                        elif (
+                            event.type == ecodes.EV_KEY
+                            and event.code == ecodes.BTN_TOUCH
+                        ):
+                            touch_down = bool(event.value)
+                            if not touch_down:
+                                started_in_corner = False
+
+                # Check for 1.2s hold in top-right hot corner
+                if touch_down:
+                    if is_in_hot_corner(x, y):
+                        if not started_in_corner:
+                            started_in_corner = True
+                            press_start = time.monotonic()
+                        elif (
+                            time.monotonic() - press_start >= HOLD_TIME
+                            and not terminating
+                        ):
+                            log_info(
+                                "Hot corner exit triggered in Terminal! Killing openvt..."
+                            )
+                            terminating = True
+                            # Force terminate openvt process
+                            os.system(f"sudo kill -9 {proc.pid} 2>/dev/null")
+                            os.system("sudo pkill -9 -f openvt 2>/dev/null")
+                            break
+                    else:
+                        started_in_corner = False
+                else:
+                    started_in_corner = False
+
+        # Wait for terminal process to exit (either via 'exit' or hot corner)
+        proc.wait()
+
+    except Exception as e:
+        log_error(f"Terminal session error: {str(e)}")
+    finally:
+        if use_hot_corner and dev:
+            try:
+                dev.close()
+            except Exception:
+                pass
+        # Switch physical display back to launcher on VT1
+        os.system("sudo chvt 1")
