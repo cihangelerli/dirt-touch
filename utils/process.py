@@ -349,19 +349,38 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
 
 
 def run_terminal_session():
-    """Launches interactive bash shell session with console cleanup."""
+    """Launches interactive bash shell session attached directly to /dev/tty1."""
     log_info("Executing interactive Terminal session")
     try:
-        # Restore terminal driver to canonical mode BEFORE starting bash
-        os.system("stty sane")
-        os.system("setterm -cursor on 2>/dev/null")
-        os.system("clear")
+        # 1. Define terminal environment explicitly
+        env = os.environ.copy()
+        env["TERM"] = "linux"
 
-        # Execute interactive login shell
-        os.system("bash --login")
+        # 2. Open physical Virtual Terminal 1 for input, output, and error streams
+        with open("/dev/tty1", "r+") as tty:
+            # Clean terminal state
+            subprocess.run(["stty", "sane"], stdin=tty, stdout=tty, stderr=tty)
+            subprocess.run(
+                ["setterm", "-cursor", "on"],
+                stdin=tty,
+                stdout=tty,
+                stderr=tty,
+                env=env,
+            )
+            subprocess.run(["clear"], stdin=tty, stdout=tty, stderr=tty, env=env)
 
-        # Clean up screen when user exits bash (via 'exit' or Ctrl+D)
-        os.system("stty sane")
-        os.system("clear")
+            # 3. Launch interactive bash bound directly to /dev/tty1
+            subprocess.run(
+                ["/bin/bash", "--login"],
+                stdin=tty,
+                stdout=tty,
+                stderr=tty,
+                env=env,
+            )
+
+            # Clean up terminal state when user exits bash
+            subprocess.run(["stty", "sane"], stdin=tty, stdout=tty, stderr=tty)
+            subprocess.run(["clear"], stdin=tty, stdout=tty, stderr=tty, env=env)
+
     except Exception as e:
         log_error(f"Terminal session error: {str(e)}")
