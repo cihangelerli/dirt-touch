@@ -349,38 +349,13 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
 
 
 def run_terminal_session():
-    """Launches interactive bash shell session attached directly to /dev/tty1."""
+    """Launches interactive bash shell session with console cleanup."""
     log_info("Executing interactive Terminal session")
     try:
-        # 1. Define terminal environment explicitly
-        env = os.environ.copy()
-        env["TERM"] = "linux"
-
-        # 2. Open physical Virtual Terminal 1 for input, output, and error streams
-        with open("/dev/tty1", "r+") as tty:
-            # Clean terminal state
-            subprocess.run(["stty", "sane"], stdin=tty, stdout=tty, stderr=tty)
-            subprocess.run(
-                ["setterm", "-cursor", "on"],
-                stdin=tty,
-                stdout=tty,
-                stderr=tty,
-                env=env,
-            )
-            subprocess.run(["clear"], stdin=tty, stdout=tty, stderr=tty, env=env)
-
-            # 3. Launch interactive bash bound directly to /dev/tty1
-            subprocess.run(
-                ["/bin/bash", "--login"],
-                stdin=tty,
-                stdout=tty,
-                stderr=tty,
-                env=env,
-            )
-
-            # Clean up terminal state when user exits bash
-            subprocess.run(["stty", "sane"], stdin=tty, stdout=tty, stderr=tty)
-            subprocess.run(["clear"], stdin=tty, stdout=tty, stderr=tty, env=env)
-
+        os.system("stty sane")
+        os.system("clear")
+        os.system("bash --login")
+        os.system("stty sane")
+        os.system("clear")
     except Exception as e:
         log_error(f"Terminal session error: {str(e)}")
