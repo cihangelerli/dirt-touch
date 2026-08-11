@@ -353,7 +353,7 @@ def run_terminal_session():
     log_info("Executing interactive Terminal session")
     try:
         os.system("clear")
-        os.system("bash")
+        os.system("bash -i < /dev/tty > /dev/tty 2>&1")
         os.system("stty sane")
         os.system("clear")
     except Exception as e:
