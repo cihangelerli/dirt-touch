@@ -348,6 +348,7 @@ def run_application(script_path: str) -> Tuple[bool, str, int]:
         log_info("Control returned to launcher.")
 
 
+'''
 def run_terminal_session():
     """Launches interactive bash shell session with console cleanup."""
     log_info("Executing interactive Terminal session")
@@ -357,5 +358,22 @@ def run_terminal_session():
         os.system("bash --login")
         os.system("stty sane")
         os.system("clear")
+    except Exception as e:
+        log_error(f"Terminal session error: {str(e)}")
+'''
+
+
+def run_terminal_session():
+    """Spawns interactive shell on a fresh Virtual Terminal (VT2) and waits for exit."""
+    log_info("Executing interactive Terminal session on VT2")
+    try:
+        # -c 2 : Allocate VT2 (TTY2)
+        # -s   : Switch display to VT2 immediately
+        # -w   : Wait until the user exits the shell before returning execution
+        # -- su - dirtzero : Run interactive shell as user dirtzero
+        os.system("sudo openvt -c 2 -s -w -- su - dirtzero")
+
+        # Switch physical screen focus back to launcher on VT1
+        os.system("sudo chvt 1")
     except Exception as e:
         log_error(f"Terminal session error: {str(e)}")
