@@ -104,6 +104,11 @@ class Launcher:
         pygame.display.quit()
         pygame.quit()
 
+        # Re-attach kernel console to VT1 and reset keyboard mode
+        os.system("sudo chvt 1 2>/dev/null")
+        os.system("sudo kbd_mode -a 2>/dev/null")
+        os.system("setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1")
+
         run_terminal_session()
 
         pygame.init()

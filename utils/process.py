@@ -352,8 +352,15 @@ def run_terminal_session():
     """Launches interactive bash shell session with console cleanup."""
     log_info("Executing interactive Terminal session")
     try:
+        # Restore terminal driver to canonical mode BEFORE starting bash
+        os.system("stty sane")
+        os.system("setterm -cursor on 2>/dev/null")
         os.system("clear")
-        os.system("bash -i < /dev/tty > /dev/tty 2>&1")
+
+        # Execute interactive login shell
+        os.system("bash --login")
+
+        # Clean up screen when user exits bash (via 'exit' or Ctrl+D)
         os.system("stty sane")
         os.system("clear")
     except Exception as e:
