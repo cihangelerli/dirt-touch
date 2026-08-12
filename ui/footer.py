@@ -15,10 +15,10 @@ class Footer:
         self.last_telemetry_update = 0.0
 
         self.clock_str = ""
-        self.wifi_raw = "WiFi IIII_"
+        self.wifi_raw = "WiFi _____"
         self.ip_str = get_ip_address()
         self.version_prefix = "DIRT-TOUCH"
-        self.version_suffix = "-v1.1"
+        self.version_suffix = "-v1.2"
 
     def update(self, dt: float):
         now = time.time()
@@ -70,14 +70,14 @@ class Footer:
         prefix_surf = font.render(self.version_prefix, True, COLOR_TEXT_ORANGE)
         suffix_surf = font.render(self.version_suffix, True, COLOR_MUTED_BROWN)
 
-        x_pos = self.rect.left + padding
+        x_pos = self.rect.left + padding + 50
         surface.blit(prefix_surf, (x_pos, cy - prefix_surf.get_height() // 2))
         x_pos += prefix_surf.get_width()
         surface.blit(suffix_surf, (x_pos, cy - suffix_surf.get_height() // 2))
 
         # 2. WiFi signal section (Middle Left)
         wifi_lbl = font.render("WiFi ", True, COLOR_MUTED_BROWN)
-        wifi_x = self.rect.left + 170
+        wifi_x = self.rect.left + 170 + 50
         surface.blit(wifi_lbl, (wifi_x, cy - wifi_lbl.get_height() // 2))
 
         bars_start_x = wifi_x + wifi_lbl.get_width()
@@ -95,7 +95,7 @@ class Footer:
 
         # 3. IP Address (Middle Right in #A55412 muted brown)
         ip_surf = font.render(self.ip_str, True, COLOR_MUTED_BROWN)
-        ip_x = self.rect.right - 180
+        ip_x = self.rect.right - 180 - 50
         surface.blit(ip_surf, (ip_x, cy - ip_surf.get_height() // 2))
 
         # 4. Clock (Right in #A55412 muted brown)
@@ -103,7 +103,7 @@ class Footer:
         surface.blit(
             clock_surf,
             (
-                self.rect.right - clock_surf.get_width() - padding,
+                self.rect.right - clock_surf.get_width() - padding - 50,
                 cy - clock_surf.get_height() // 2,
             ),
         )
