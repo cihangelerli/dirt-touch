@@ -123,13 +123,11 @@ class Launcher:
         self.launch_app(script_path)
 
     def release_display_for_app(self):
-        """Rebinds fbcon and restores tty1 input/output prior to launching external shell scripts."""
+        """Rebinds fbcon and restores tty1 state BEFORE launching external terminal tools."""
         pygame.display.quit()
         pygame.quit()
 
-        # 1. Rebind kernel console framebuffer
         os.system("echo 1 | sudo tee /sys/class/vtconsole/vtcon1/bind >/dev/null 2>&1")
-        # 2. Reset keyboard and switch active VT to tty1
         os.system("sudo kbd_mode -a -C /dev/tty1 2>/dev/null")
         os.system("sudo chvt 1 2>/dev/null")
         os.system(
@@ -137,14 +135,19 @@ class Launcher:
         )
 
     def restart_dirt_touch_service(self):
-        """Cleanly releases display/VT, restores fbcon, and restarts dirt-touch.service."""
+        """Cleanly quits Pygame KMSDRM and schedules an asynchronous service restart."""
         log_info("Restarting dirt-touch service...")
 
-        self.release_display_for_app()
+        # 1. Release KMSDRM framebuffer lock cleanly without forcing fbcon rebind
+        pygame.display.quit()
+        pygame.quit()
 
+        # 2. Issue an asynchronous systemd restart request
         os.system(
-            "sudo systemctl daemon-reload && sudo systemctl restart dirt-touch.service &"
+            "sudo systemctl daemon-reload && sudo systemctl restart --no-block dirt-touch.service"
         )
+
+        # 3. Exit process cleanly
         sys.exit(0)
 
     def system_restart(self):
