@@ -4,6 +4,12 @@ export TERM=linux
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 
+echo 1 | sudo tee /sys/class/vtconsole/vtcon1/bind >/dev/null 2>&1
+sudo chvt 1 2>/dev/null
+sudo kbd_mode -a -C /dev/tty1 2>/dev/null
+
+exec < /dev/tty1 > /dev/tty1 2>&1
+
 STTY_BAK=$(stty -g 2>/dev/null)
 
 cleanup() {
@@ -17,7 +23,6 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
-# Reset console state and show cursor
 stty sane 2>/dev/null
 setterm -cursor on 2>/dev/null
 tput cnorm 2>/dev/null
