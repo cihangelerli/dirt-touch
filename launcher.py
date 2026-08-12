@@ -13,7 +13,7 @@ from screens.system_settings import SystemSettingsScreen
 from ui.colors import COLOR_BACKGROUND
 from ui.fonts import reset_fonts
 from utils.logger import log_info
-from utils.process import run_application, run_terminal_session
+from utils.process import run_application
 
 
 class Launcher:
@@ -118,6 +118,21 @@ class Launcher:
 
         script_path = os.path.expanduser("~/terminal.sh")
         self.launch_app(script_path)
+
+    def restart_dirt_touch_service(self):
+        """Cleanly releases display/VT, reloads systemd, and restarts dirt-touch.service."""
+        log_info("Restarting dirt-touch service...")
+
+        pygame.display.quit()
+        pygame.quit()
+
+        os.system("sudo chvt 1 2>/dev/null")
+        os.system("sudo kbd_mode -a 2>/dev/null")
+        os.system("setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1")
+        os.system(
+            "sudo systemctl daemon-reload && sudo systemctl restart dirt-touch.service"
+        )
+        sys.exit(0)
 
     def system_restart(self):
         """Rebinds fbcon to DRM plane via VT switch, cleanly exits Python, and reboots."""

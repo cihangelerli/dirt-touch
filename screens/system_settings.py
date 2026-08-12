@@ -1,9 +1,11 @@
-# screens/system_settings.py
+import os
+
 import pygame
 
 from screens.base_screen import BaseScreen
 from ui.button import Button
 from ui.colors import COLOR_BACKGROUND, COLOR_TEXT_ORANGE
+from ui.fonts import get_font_large
 from ui.footer import Footer
 
 
@@ -21,32 +23,48 @@ class SystemSettingsScreen(BaseScreen):
         start_y = 108
         row_h = 84
 
+        shortcuts_dir = os.path.expanduser("~/dirt-touch/system_screen_shortcuts")
+
         items = [
             # Row 0
             ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
-            ("WiFi", "DISABLED", None),
+            (
+                "WiFi",
+                "SYS",
+                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "wifi.sh")),
+            ),
             # Row 1
-            ("CONFIG", "DISABLED", None),
-            ("CMDLINE", "DISABLED", None),
+            (
+                "CONFIG",
+                "APP",
+                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "config.sh")),
+            ),
+            (
+                "CMDLINE",
+                "APP",
+                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "cmdline.sh")),
+            ),
             # Row 2
-            ("HTOP", "DISABLED", None),
-            ("UPDATE ALL", "DISABLED", None),
+            (
+                "HTOP",
+                "APP",
+                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "htop.sh")),
+            ),
+            (
+                "UPDATE ALL",
+                "APP",
+                lambda: self.app.launch_app(
+                    os.path.join(shortcuts_dir, "update_all.sh")
+                ),
+            ),
             # Row 3
-            ("RESTART\nDIRT-TOUCH", "DISABLED", None),
+            (
+                "RESTART\nDIRT-TOUCH",
+                "APP",
+                lambda: self.app.restart_dirt_touch_service(),
+            ),
             ("BACK", "SYS", lambda: self.app.switch_screen("home")),
         ]
-
-        """
-        # phase 2: implement these buttons with actual functionality
-        # hot corner detection and exit should work for these in case no keyboard present
-        # Probably will need sudo permission to run these commands
-        WIFI > sudo nmtui
-        CONFIG > sudo nano /boot/config.txt
-        CMDLINE > sudo nano /boot/cmdline.txt
-        HTOP > htop
-        UPDATE ALL > sudo apt update && sudo apt upgrade -y
-        RESTART DIRT-TOUCH > sudo systemctl daemon-reload && sudo systemctl restart dirt-touch.service
-        """
 
         for i, (text, style, cb) in enumerate(items):
             r = i // 2
@@ -65,12 +83,9 @@ class SystemSettingsScreen(BaseScreen):
 
     def draw(self, surface: pygame.Surface):
         surface.fill(COLOR_BACKGROUND)
-        font = pygame.font.Font(None, 28)
-        from ui.fonts import get_font_large
-
         font = get_font_large()
 
-        # 1. Top-right header title: "// SYSTEM SETTINGS" in #FF7700 orange
+        # 1. Top-right header title: "// SYSTEM SETTINGS"
         header_surf = font.render("// SYSTEM SETTINGS", True, COLOR_TEXT_ORANGE)
         surface.blit(header_surf, (597 - header_surf.get_width(), 42))
 

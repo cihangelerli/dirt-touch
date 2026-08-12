@@ -54,9 +54,8 @@ class HomeScreen(BaseScreen):
         btn_settings = Button(
             rect=pygame.Rect(margin_x, int(3 * row_h), col_w, int(row_h)),
             text="SYSTEM\nSETTINGS",
-            subtitle="UNDER CONSTRUCTION",
-            style="DISABLED_SYS",
-            callback=None,
+            style="SYS",
+            callback=lambda: self.app.switch_screen("system_settings"),
         )
         self.buttons.append(btn_settings)
 
