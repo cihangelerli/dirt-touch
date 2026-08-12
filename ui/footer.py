@@ -63,7 +63,7 @@ class Footer:
         )
 
         font = get_font_small()
-        padding = 40
+        padding = 10
         cy = self.rect.centery
 
         # 1. Version String (Left): "DIRT-TOUCH" in orange, "-v0.3" in muted brown
