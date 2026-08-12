@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export TERM="${TERM:-linux}"
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 
@@ -21,7 +20,7 @@ stty sane 2>/dev/null
 setterm -cursor on 2>/dev/null
 tput cnorm 2>/dev/null
 
-python3 -c "import pty; pty.spawn(['/bin/bash', '-c', 'sudo apt update && sudo apt upgrade -y; echo; echo \"dirtzero@dirtzero:~ $\"; sleep 2'])"
+python3 -c "import pty; pty.spawn(['/bin/bash', '-i', '-c', 'sudo apt update && sudo apt upgrade -y; echo; echo \"dirtzero@dirtzero:~ $\"; sleep 2'])"
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
