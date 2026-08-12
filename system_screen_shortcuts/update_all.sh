@@ -20,11 +20,11 @@ stty sane 2>/dev/null
 setterm -cursor on 2>/dev/null
 tput cnorm 2>/dev/null
 
-python3 -c "import pty; pty.spawn(['/bin/bash', '-i', '-c', 'sudo apt update && sudo apt upgrade -y; echo; read -p \"Press ENTER to return...\"'])"
-EXIT_CODE=$?
+echo "=== STARTING SYSTEM UPDATE ==="
+echo
+sudo apt update && sudo apt upgrade -y
 
-if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
-    exit 0
-fi
-
-exit $EXIT_CODE
+echo
+echo "=== UPDATE COMPLETE. RETURNING TO LAUNCHER... ==="
+sleep 3
+exit 0

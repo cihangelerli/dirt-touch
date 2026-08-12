@@ -21,13 +21,4 @@ stty sane 2>/dev/null
 setterm -cursor on 2>/dev/null
 tput cnorm 2>/dev/null
 
-# Allocate PTY for nano config.txt
-python3 -c "import pty; pty.spawn(['/bin/bash', '-i', '-c', 'sudo nano /boot/firmware/config.txt'])"
-EXIT_CODE=$?
-
-if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
-    exit 0
-fi
-
-exit $EXIT_CODE
-
+sudo nano /boot/firmware/config.txt
