@@ -30,7 +30,7 @@ class SystemSettingsScreen(BaseScreen):
             ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
             (
                 "WiFi",
-                "SYS",
+                "APP",
                 lambda: self.app.launch_app(os.path.join(shortcuts_dir, "wifi.sh")),
             ),
             # Row 1
