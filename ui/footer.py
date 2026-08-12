@@ -70,14 +70,14 @@ class Footer:
         prefix_surf = font.render(self.version_prefix, True, COLOR_TEXT_ORANGE)
         suffix_surf = font.render(self.version_suffix, True, COLOR_MUTED_BROWN)
 
-        x_pos = self.rect.left + padding + 50
+        x_pos = self.rect.left + padding + 40
         surface.blit(prefix_surf, (x_pos, cy - prefix_surf.get_height() // 2))
         x_pos += prefix_surf.get_width()
         surface.blit(suffix_surf, (x_pos, cy - suffix_surf.get_height() // 2))
 
         # 2. WiFi signal section (Middle Left)
         wifi_lbl = font.render("WiFi ", True, COLOR_MUTED_BROWN)
-        wifi_x = self.rect.left + 170 + 50
+        wifi_x = self.rect.left + 170 + 40
         surface.blit(wifi_lbl, (wifi_x, cy - wifi_lbl.get_height() // 2))
 
         bars_start_x = wifi_x + wifi_lbl.get_width()
