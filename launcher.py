@@ -136,7 +136,7 @@ class Launcher:
         os.system("sudo chvt 1 2>/dev/null")
         os.system("sudo kbd_mode -a 2>/dev/null")
         os.system(
-            "export TERM=linux; setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1"
+            "export TERM=linux; setterm -reset -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1"
         )
 
         # 3. Restart service in background so python process exits cleanly
