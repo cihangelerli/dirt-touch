@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export TERM="${TERM:-linux}"
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 

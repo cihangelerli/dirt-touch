@@ -4,6 +4,7 @@ import sys
 
 import pygame
 
+from screens.confirm_keyboard import ConfirmKeyboardScreen
 from screens.confirm_restart import ConfirmRestartScreen
 from screens.confirm_shutdown import ConfirmShutdownScreen
 from screens.error_screen import ErrorScreen
@@ -28,6 +29,7 @@ class Launcher:
             "home": HomeScreen(self),
             "confirm_restart": ConfirmRestartScreen(self),
             "confirm_shutdown": ConfirmShutdownScreen(self),
+            "confirm_keyboard": ConfirmKeyboardScreen(self),
             "error": ErrorScreen(self),
             "system_info": SystemInfoScreen(self),
             "system_settings": SystemSettingsScreen(self),
@@ -71,9 +73,10 @@ class Launcher:
                     kwargs.get("status", ""),
                     kwargs.get("code", 0),
                 )
+            elif screen_name == "confirm_keyboard" and kwargs:
+                self.active_screen.set_target_script(kwargs.get("script", ""))
 
             self.active_screen.enter()
-            # Flush input buffer on screen switch to prevent tap leakage
             pygame.event.clear()
 
     def launch_app(self, script_path: str):
@@ -120,7 +123,7 @@ class Launcher:
         self.launch_app(script_path)
 
     def restart_dirt_touch_service(self):
-        """Cleanly releases display/VT, reloads systemd, and restarts dirt-touch.service."""
+        """Cleanly releases display/VT, clears terminal state, and restarts dirt-touch.service."""
         log_info("Restarting dirt-touch service...")
 
         pygame.display.quit()
@@ -128,7 +131,10 @@ class Launcher:
 
         os.system("sudo chvt 1 2>/dev/null")
         os.system("sudo kbd_mode -a 2>/dev/null")
-        os.system("setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1")
+        os.system(
+            "export TERM=linux; setterm -blank 0 -powerdown 0 -clear all > /dev/tty1 2>&1"
+        )
+
         os.system(
             "sudo systemctl daemon-reload && sudo systemctl restart dirt-touch.service"
         )
