@@ -28,4 +28,6 @@ stty sane 2>/dev/null
 setterm -cursor on 2>/dev/null
 tput cnorm 2>/dev/null
 
+clear
+
 sudo nmtui
