@@ -82,7 +82,7 @@ class HomeScreen(BaseScreen):
         # Row 3 Col 1: SYSTEM INFO
         btn_sys_info = Button(
             rect=pygame.Rect(margin_x + col_w, int(3 * row_h), col_w, int(row_h)),
-            text="SYSTEM INFO",
+            text="SYSTEM\nINFO",
             style="SYS",
             callback=lambda: self.app.switch_screen("system_info"),
         )
