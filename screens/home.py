@@ -68,7 +68,9 @@ class HomeScreen(BaseScreen):
         )
         self.buttons.append(btn_terminal)
 
-        # Row 3 Col 1: Restart Action (TEMPORARILY DISABLED: callback=None, style=DISABLED_SYS)
+        # Row 3 Col 1: Restart Action (DISABLED: callback=None, style=DISABLED_SYS)
+        # DISABLED DUE TO HARDWARE RESTRICTIONS: SCREEN DOES NOT RESTART WITHOUT FULL POWER CYCLE
+        """
         btn_restart = Button(
             rect=pygame.Rect(margin_x + col_w, int(3 * row_h), col_w, int(row_h)),
             text="RESTART",
@@ -76,6 +78,15 @@ class HomeScreen(BaseScreen):
             callback=None,
         )
         self.buttons.append(btn_restart)
+        """
+        # Row 3 Col 1: SYSTEM INFO
+        btn_sys_info = Button(
+            rect=pygame.Rect(margin_x + col_w, int(3 * row_h), col_w, int(row_h)),
+            text="SYSTEM INFO",
+            style="SYS",
+            callback=lambda: self.app.switch_screen("system_info"),
+        )
+        self.buttons.append(btn_sys_info)
 
         # Row 4 Col 1: Shutdown Action
         btn_shutdown = Button(

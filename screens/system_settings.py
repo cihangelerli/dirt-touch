@@ -27,11 +27,16 @@ class SystemSettingsScreen(BaseScreen):
 
         items = [
             # Row 0
-            ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
+            # ("SYSTEM INFO", "APP", lambda: self.app.switch_screen("system_info")),
             (
                 "WiFi",
                 "APP",
                 lambda: self.app.launch_app(os.path.join(shortcuts_dir, "wifi.sh")),
+            ),
+            (
+                "GIT PULL",
+                "APP",
+                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "git_pull.sh")),
             ),
             # Row 1
             (
@@ -43,9 +48,12 @@ class SystemSettingsScreen(BaseScreen):
                 ),
             ),
             (
-                "GIT PULL",
+                "CONFIG",
                 "APP",
-                lambda: self.app.launch_app(os.path.join(shortcuts_dir, "git_pull.sh")),
+                lambda: self.app.switch_screen(
+                    "confirm_keyboard",
+                    script=os.path.join(shortcuts_dir, "config.sh"),
+                ),
             ),
             # Row 2
             (
