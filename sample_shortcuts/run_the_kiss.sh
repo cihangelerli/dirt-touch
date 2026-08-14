@@ -19,6 +19,8 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
+clear
+
 setterm -cursor off 2>/dev/null
 
 /usr/bin/mpv \

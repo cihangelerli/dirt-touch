@@ -4,6 +4,7 @@ export TERM=linux
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 
+# Rebind fbcon and attach BOTH stdin and stdout to tty1
 echo 1 | sudo tee /sys/class/vtconsole/vtcon1/bind >/dev/null 2>&1
 sudo chvt 1 2>/dev/null
 sudo kbd_mode -a -C /dev/tty1 2>/dev/null
@@ -29,16 +30,18 @@ tput cnorm 2>/dev/null
 
 clear
 
+clear
+
 echo "========================================="
-echo "       STARTING SYSTEM UPDATE           "
+echo "        PULLING LATEST DIRT-TOUCH        "
 echo "========================================="
 echo
 
-sudo apt update && sudo apt upgrade -y
+git -C "$HOME/dirt-touch" pull origin main
 
 echo
 echo "========================================="
-echo "   UPDATE COMPLETE. RETURNING IN 3S...  "
+echo "   PULL COMPLETE. RETURNING IN 3S...    "
 echo "========================================="
 sleep 3
 clear

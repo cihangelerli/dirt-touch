@@ -43,11 +43,11 @@ class SystemSettingsScreen(BaseScreen):
                 ),
             ),
             (
-                "CMDLINE",
+                "GIT PULL",
                 "APP",
                 lambda: self.app.switch_screen(
                     "confirm_keyboard",
-                    script=os.path.join(shortcuts_dir, "cmdline.sh"),
+                    script=os.path.join(shortcuts_dir, "git_pull.sh"),
                 ),
             ),
             # Row 2

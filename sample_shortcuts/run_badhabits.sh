@@ -24,6 +24,8 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
+clear
+
 # Jump to the project directory so relative image paths ('imgs/', 'banners/') still work
 cd "$HOME/badhabits"
 

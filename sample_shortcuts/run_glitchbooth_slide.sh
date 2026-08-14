@@ -30,6 +30,8 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
+clearß
+
 # Run cog to display glitchbooth slideshow
 cog https://glitchbooth.online/slideshow
 EXIT_CODE=$?
