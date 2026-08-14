@@ -40,7 +40,7 @@ class SystemSettingsScreen(BaseScreen):
             ),
             # Row 1
             (
-                "CONFIG",
+                "CONFIG.TXT",
                 "APP",
                 lambda: self.app.switch_screen(
                     "confirm_keyboard",
@@ -48,11 +48,11 @@ class SystemSettingsScreen(BaseScreen):
                 ),
             ),
             (
-                "CONFIG",
+                "CMNDLINE.TXT",
                 "APP",
                 lambda: self.app.switch_screen(
                     "confirm_keyboard",
-                    script=os.path.join(shortcuts_dir, "config.sh"),
+                    script=os.path.join(shortcuts_dir, "cmdline.sh"),
                 ),
             ),
             # Row 2
