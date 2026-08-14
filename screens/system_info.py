@@ -33,7 +33,7 @@ class SystemInfoScreen(BaseScreen):
             rect=pygame.Rect(margin_x + col_w, btn_y, col_w, btn_height),
             text="BACK",
             style="SYS",
-            callback=lambda: self.app.switch_screen("system_settings"),
+            callback=lambda: self.app.switch_screen("home"),
         )
 
     def update(self, dt: float):
