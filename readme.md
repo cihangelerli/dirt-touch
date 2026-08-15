@@ -469,7 +469,7 @@ Structured telemetry fields: Hostname, OS/Kernel, Pi Model, CPU Temp, RAM Usage,
 Displays launcher build information:
 
 - App Name: `DIRT-TOUCH`
-- Version: `v1.0.0`
+- Version: `v1.1.0`
 - Python Version
 - Pygame Version
 - Git Commit Hash (if deployed in git repository)
@@ -499,27 +499,31 @@ dirt-touch/
 ├── screens/
 │   ├── base_screen.py
 │   ├── home.py
-│   ├── settings.py
+│   ├── system_settings.py
 │   ├── system_info.py
-│   ├── wifi.py
-│   ├── config.py
 │   ├── error_screen.py
+│   ├── confirm_keyboard.py
 │   ├── confirm_restart.py
-│   ├── confirm_shutdown.py
-│   └── about.py
+│   └── confirm_shutdown.py
 ├── ui/
 │   ├── button.py
 │   ├── footer.py
 │   ├── scrollbar.py
 │   ├── colors.py
-│   ├── fonts.py
-│   └── animations.py
+│   └── fonts.py
 ├── utils/
 │   ├── discovery.py
 │   ├── network.py
 │   ├── system.py
 │   ├── process.py
 │   └── logger.py
+├── system_screen_shortcuts/
+│   ├── cmdline.sh
+│   ├── config.sh
+│   ├── git_pull.sh
+│   ├── htop.sh
+│   ├── update_all.sh
+│   └── wifi.sh
 └── assets/
     └── fonts/
 
@@ -545,11 +549,49 @@ dirt-touch/
 
 ## 21. NOTES:
 
-- phase 1 implemented main screen, confirmation screens, error screen, app lauch and exit, shutdown, terminal, PLUS hot corner touch exit for running apps which was out of scope of this document.
-
 - run the main.py with "DEBUG_TOUCH=1 python3 main.py" to log all touch events to l0gs/launcher.log file for debugging touch related issues.
 
-- phase 2 goal: system settings and related screens
+- 'RESTART' button disabled and removed due to screen hardware limitation of not resetting when there isnt a complete power down cycle.
+
+## 22. PROGRESS:
+
+**PHASE 1**
+
+COMPLETED
+
+- Home Screen, Buttons and System Buttons
+- Footer (~)
+- Shell wrapper shortcuts for existing apps and/or actions
+- Hot corner touch exit
+- Confirmation and Error screens
+
+ISSUES
+
+- Scroll bar (hone screen) not loyal to design and probably not working…
+- Needs housekeeping
+- Footer is not loyal to design
+- Design needs better unification
+
+
+**PHASE 2**
+
+COMPLETED
+
+- System Settings with working shortcuts, System Info, Confirm Keyboard
+
+ISSUES
+
+- Config and cdmline exits to confirm screen when hot corner exit
+- Error screen does not break the script name and status message into lines correctly
+
+
+**PHASE 3**
+
+TO-DO
+
+- Divide system settings into pages with left and right arrow pagination
+- Fix Scrollbar for home page and other future needs
+- Housekeeping including the readme.md file
 
 ## Powered by [**Dirtcake Studio**](https://dirtcakestudio.com)
 
