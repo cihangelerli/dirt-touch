@@ -106,13 +106,6 @@ Reasons:
 
 The launcher operates as a central state machine managing screen navigation rather than having screens create or instantiate each other directly.
 
-```text
-[ HOME ] ──> [ SETTINGS ] ──> [ SYSTEM INFO ]
-   ▲              │
-   └──────────────┴── [ BACK ]
-
-```
-
 ### Application Execution Lifecycle
 
 Child processes (wrapper scripts) are executed cleanly via Python's `subprocess` library:

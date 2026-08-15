@@ -48,7 +48,7 @@ class SystemSettingsScreen(BaseScreen):
                 ),
             ),
             (
-                "CMNDLINE.TXT",
+                "CMDLINE.TXT",
                 "APP",
                 lambda: self.app.switch_screen(
                     "confirm_keyboard",
