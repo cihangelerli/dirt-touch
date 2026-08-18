@@ -9,3 +9,4 @@ logs/
 .venv/
 *.tmp
 ~ai*.tmp
+test-scripts/

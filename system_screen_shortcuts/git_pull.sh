@@ -30,8 +30,6 @@ tput cnorm 2>/dev/null
 
 clear
 
-clear
-
 echo "========================================="
 echo "        PULLING LATEST DIRT-TOUCH        "
 echo "========================================="
