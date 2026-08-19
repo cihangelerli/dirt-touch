@@ -15,7 +15,7 @@ class ConfirmKeyboardScreen(BaseScreen):
         self.target_script = ""
 
         margin_x = 43
-        col_w = 270
+        col_w = 277
         btn_y = 355
         btn_height = 89
 
@@ -38,7 +38,11 @@ class ConfirmKeyboardScreen(BaseScreen):
 
     def on_confirm(self):
         if self.target_script:
-            self.app.launch_app(self.target_script)
+            script = self.target_script
+            self.app.switch_screen(
+                "system_settings"
+            )  # <--- Reset active screen to system_settings first
+            self.app.launch_app(script)
 
     def handle_event(self, event: pygame.event.Event):
         for btn in self.buttons:

@@ -40,23 +40,34 @@ class ErrorScreen(BaseScreen):
     def handle_event(self, event: pygame.event.Event):
         self.btn_back.handle_event(event)
 
-    def _render_multiline_right(
+    def _render_wrapped_right(
         self,
         surface: pygame.Surface,
         text: str,
         font: pygame.font.Font,
         right_x: int,
         start_y: int,
+        max_width: int = 554,
     ) -> int:
-        """Renders multi-line text right-aligned at right_x in #A55412 muted brown."""
-        lines = str(text).split("\n")
+        """Word-wraps and right-aligns text to fit within max_width (x=43 to x=597)."""
         current_y = start_y
-        for line in lines:
-            if not line:
-                continue
-            surf = font.render(line, True, COLOR_MUTED_BROWN)
-            surface.blit(surf, (right_x - surf.get_width(), current_y))
-            current_y += surf.get_height() + 2
+        raw_lines = str(text).split("\n")
+        for raw_line in raw_lines:
+            words = raw_line.split(" ")
+            curr_line = ""
+            for word in words:
+                test_line = f"{curr_line} {word}".strip()
+                if font.size(test_line)[0] > max_width and curr_line:
+                    surf = font.render(curr_line, True, COLOR_MUTED_BROWN)
+                    surface.blit(surf, (right_x - surf.get_width(), current_y))
+                    current_y += surf.get_height() + 2
+                    curr_line = word
+                else:
+                    curr_line = test_line
+            if curr_line:
+                surf = font.render(curr_line, True, COLOR_MUTED_BROWN)
+                surface.blit(surf, (right_x - surf.get_width(), current_y))
+                current_y += surf.get_height() + 2
         return current_y
 
     def draw(self, surface: pygame.Surface):
@@ -75,9 +86,29 @@ class ErrorScreen(BaseScreen):
         lbl_status = font.render("STATUS", True, COLOR_TEXT_ORANGE)
         lbl_code = font.render("EXIT CODE", True, COLOR_TEXT_ORANGE)
 
-        surface.blit(lbl_script, (43, 140))
-        surface.blit(lbl_status, (43, 215))
-        surface.blit(lbl_code, (43, 290))
+        curr_y = 125
+
+        # surface.blit(lbl_script, (43, 140))
+        # A. Script section
+        surface.blit(lbl_script, (43, curr_y))
+        curr_y = (
+            self._render_wrapped_right(surface, self.script_path, font, 597, curr_y)
+            + 12
+        )
+
+        # surface.blit(lbl_status, (43, 215))
+        # B. Status section
+        surface.blit(lbl_status, (43, curr_y))
+        curr_y = (
+            self._render_wrapped_right(surface, self.status, font, 597, curr_y) + 12
+        )
+
+        # surface.blit(lbl_code, (43, 290))
+        # C. Exit code section
+        surface.blit(lbl_code, (43, curr_y))
+        curr_y = (
+            self._render_wrapped_right(surface, self.exit_code, font, 597, curr_y) + 24
+        )
 
         # 4. Diagnostic Values (Right-aligned at x=597 in #A55412 muted brown)
         self._render_multiline_right(surface, self.script_path, font, 597, 140)
