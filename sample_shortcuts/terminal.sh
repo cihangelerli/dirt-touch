@@ -2,7 +2,7 @@
 # DIRT_TITLE=TERMINAL
 # DIRT_ORDER=5
 
-export TERM=xterm-256color
+export TERM=linux
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 
@@ -32,8 +32,7 @@ tput cnorm 2>/dev/null
 
 clear
 
-# Spawn login bash shell in a PTY session
-python3 -c "import pty; pty.spawn(['/bin/bash', '--login'])"
+/bin/bash --login
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then

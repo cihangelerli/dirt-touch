@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Use xterm-256color for proper ncurses border rendering
-export TERM=xterm-256color
+export TERM=linux
 export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-kmsdrm}"
 export SDL_MOUSEDRV="${SDL_MOUSEDRV:-evdev}"
 
@@ -31,5 +30,4 @@ tput cnorm 2>/dev/null
 
 clear
 
-# Spawn nmtui inside a PTY session to provide a valid controlling terminal
-python3 -c "import pty; pty.spawn(['sudo', 'nmtui'])"
+sudo nmtui

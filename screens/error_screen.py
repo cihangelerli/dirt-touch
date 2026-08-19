@@ -110,10 +110,6 @@ class ErrorScreen(BaseScreen):
             self._render_wrapped_right(surface, self.exit_code, font, 597, curr_y) + 24
         )
 
-        # 4. Diagnostic Values (Right-aligned at x=597 in #A55412 muted brown)
-        self._render_multiline_right(surface, self.script_path, font, 597, 140)
-        self._render_multiline_right(surface, self.status, font, 597, 215)
-        self._render_multiline_right(surface, self.exit_code, font, 597, 290)
 
         # 5. Bottom-right BACK button & footer
         self.btn_back.draw(surface)
