@@ -93,13 +93,13 @@ class Footer:
             else:
                 pygame.draw.rect(surface, COLOR_MUTED_BROWN, bar_rect, width=1)
 
-        # 3. IP Address (Middle Right in #A55412 muted brown)
-        ip_surf = font.render(self.ip_str, True, COLOR_MUTED_BROWN)
+        # 3. IP Address (Middle Right in text orange)
+        ip_surf = font.render(self.ip_str, True, COLOR_TEXT_ORANGE)
         ip_x = self.rect.right - 180 - 50
         surface.blit(ip_surf, (ip_x, cy - ip_surf.get_height() // 2))
 
-        # 4. Clock (Right in #A55412 muted brown)
-        clock_surf = font.render(self.clock_str, True, COLOR_MUTED_BROWN)
+        # 4. Clock (Right in text orange)
+        clock_surf = font.render(self.clock_str, True, COLOR_TEXT_ORANGE)
         surface.blit(
             clock_surf,
             (
